@@ -204,7 +204,7 @@
 .djk-monitor-domain { font-size: 27px; line-height: 1; }
 .djk-monitor-note { font-size: 16px; opacity: .6; }
 .djk-monitor-chin { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; padding: 0 4px; flex-wrap: wrap; }
-.djk-monitor-chin h4 { margin: 0; font: 750 16px/1.1 var(--font-display); font-stretch: 116%; }
+.djk-monitor-chin h3, .djk-monitor-chin h4 { margin: 0; font: 750 16px/1.1 var(--font-display); font-stretch: 116%; }
 .djk-monitor-chin p { margin: 2px 0 0; font: 400 12px/1.4 var(--font-mono); color: var(--ink-2); }
 
 /* ---------- Service ---------- */
@@ -232,3 +232,7 @@
 
 /* Current language / page key: same look as a pressed key. */
 .djk-key[aria-current="true"] { --top: var(--accent); --side: var(--accent-side); --fg: var(--on-accent); }
+
+/* Titles that link to their detail page keep the title look. */
+.djk-monitor-chin h3 a, .djk-label-title a, .djk-service h3 a { color: inherit; text-decoration: none; }
+.djk-monitor-chin h3 a:hover, .djk-label-title a:hover, .djk-service h3 a:hover { text-decoration: underline; text-underline-offset: 3px; }

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Locale } from '@/i18n/locales';
 import { href, type PageRef } from '@/i18n/routes';
 import type { Dictionary } from '@/i18n/dictionaries';
+import { Keycap } from '@/components/djk';
 import { KeyShortcuts } from '@/components/client/KeyShortcuts';
 import { SoundSwitch } from '@/components/client/SoundSwitch';
 import { ThemeSwitch } from '@/components/client/ThemeSwitch';
@@ -22,15 +23,13 @@ export function Header({ locale, current, dict }: { locale: Locale; current: Pag
         </Link>
         <nav aria-label={dict.nav.label} className="djk-row">
           {SECTIONS.map((section, i) => (
-            <a
+            <Keycap
               key={section}
-              className={`djk-key djk-kc${section === 'contact' ? ' djk-key--accent' : ''}`}
+              n={i + 1}
+              label={dict.nav[section]}
               href={`${onHome ? '' : home}#${section}`}
-              data-key={i + 1}
-            >
-              <b aria-hidden="true">{i + 1}</b>
-              <span>{dict.nav[section]}</span>
-            </a>
+              variant={section === 'contact' ? 'accent' : undefined}
+            />
           ))}
         </nav>
         <div className={styles.controls}>

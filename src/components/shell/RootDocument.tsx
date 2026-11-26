@@ -23,6 +23,8 @@ export function RootDocument({ locale, children }: { locale: Locale; children: R
       className={`${display.variable} ${body.variable} ${mono.variable} ${screen.variable}`}
       suppressHydrationWarning
     >
+      {/* App Router root layout: a plain <head> is the supported way to inline the pre-paint theme script. */}
+      {/* eslint-disable-next-line @next/next/no-head-element */}
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
