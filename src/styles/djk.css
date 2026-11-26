@@ -1,0 +1,231 @@
+/* DJK-1 components — ported from design/design-system/components/bundle.css. Fonts come from next/font. */
+/* DJK-1 komponente. Sve vrednosti dolaze iz tokens.css (tokens.json). */
+
+.display-xl { font-stretch: 125%; }
+.display, .heading-1, .heading-2 { font-stretch: 118%; }
+.heading-3, .eyebrow, .legend { font-stretch: 112%; }
+.eyebrow, .legend { text-transform: uppercase; }
+
+.djk-root {
+  background: var(--desk);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.djk-root *, .djk-root *::before, .djk-root *::after { box-sizing: border-box; }
+.djk-root :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+.djk-eyebrow {
+  font: 600 12px/1 var(--font-display); font-stretch: 112%;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
+}
+.djk-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: flex-end; }
+
+/* ---------- Key ---------- */
+.djk-key {
+  --top: var(--cap); --side: var(--cap-side); --fg: var(--ink); --d: var(--depth-key);
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: .5em;
+  font: 650 14px/1 var(--font-display); font-stretch: 112%;
+  letter-spacing: .06em; text-transform: uppercase; text-decoration: none; white-space: nowrap;
+  color: var(--fg);
+  padding: .9rem 1.15rem;
+  border: 0; border-radius: var(--radius-key);
+  background-color: var(--top);
+  background-image: linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,0) 45%, rgba(0,0,0,.05));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.32),
+    inset 0 -1px 0 rgba(0,0,0,.10),
+    0 var(--d) 0 var(--side),
+    0 calc(var(--d) + 1px) 0 rgba(0,0,0,.20),
+    0 calc(var(--d) + 7px) 12px -3px var(--shadow-tint);
+  margin-bottom: var(--d);
+  transform: translateY(0);
+  transition: transform 70ms cubic-bezier(.3,.7,.4,1), box-shadow 70ms cubic-bezier(.3,.7,.4,1);
+  cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+}
+.djk-key::after {
+  content: ""; position: absolute; inset: 3px 5px 6px; border-radius: 6px; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 25%, rgba(255,255,255,.16), transparent 70%);
+}
+.djk-key:active, .djk-key.is-down {
+  transform: translateY(calc(var(--d) - 1px));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    inset 0 -1px 0 rgba(0,0,0,.10),
+    0 1px 0 var(--side),
+    0 2px 0 rgba(0,0,0,.20),
+    0 3px 4px -1px var(--shadow-tint);
+}
+.djk-key[aria-disabled="true"], .djk-key:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.djk-key--accent { --top: var(--accent); --side: var(--accent-side); --fg: var(--on-accent); }
+.djk-key--mod { --top: var(--mod); --side: var(--mod-side); --fg: var(--mod-ink); }
+.djk-key--sm { --d: var(--depth-key-sm); padding: .6rem .8rem; font-size: 12px; border-radius: var(--radius-key-sm); }
+.djk-key[aria-pressed="true"] { --top: var(--accent); --side: var(--accent-side); --fg: var(--on-accent); }
+.djk-key .djk-arrow { font-family: var(--font-mono); font-weight: 500; letter-spacing: 0; }
+
+/* ---------- Keycap (kvadratni, sa legendom) ---------- */
+.djk-kc {
+  width: 76px; height: 68px;
+  flex-direction: column; align-items: flex-start; justify-content: space-between;
+  padding: 9px 10px 10px; text-transform: none; letter-spacing: .02em;
+}
+.djk-kc b { font: 500 14px/1 var(--font-mono); }
+.djk-kc span { font: 600 11px/1 var(--font-display); font-stretch: 105%; text-transform: uppercase; letter-spacing: .06em; }
+@media (max-width: 520px) { .djk-kc { width: 62px; height: 58px; } }
+
+/* ---------- Switch ---------- */
+.djk-switch {
+  display: inline-flex; align-items: center; gap: var(--space-3);
+  background: none; border: 0; padding: 4px; cursor: pointer; color: var(--ink);
+  font: 600 12px/1 var(--font-display); font-stretch: 112%; letter-spacing: .12em; text-transform: uppercase;
+}
+.djk-switch-track {
+  position: relative; width: 58px; height: 28px; border-radius: 7px; flex: none;
+  background: var(--well); box-shadow: var(--sink);
+}
+.djk-switch-knob {
+  position: absolute; top: 3px; left: 3px; width: 26px; height: 22px; border-radius: var(--radius-chip);
+  background-color: var(--cap);
+  background-image: repeating-linear-gradient(90deg, rgba(0,0,0,.14) 0 1px, transparent 1px 4px);
+  background-size: 12px 12px; background-position: center; background-repeat: no-repeat;
+  box-shadow: 0 2px 0 var(--cap-side), 0 3px 5px var(--shadow-tint), inset 0 1px 0 rgba(255,255,255,.3);
+  transition: transform 140ms cubic-bezier(.3,.7,.4,1);
+}
+.djk-switch[aria-checked="true"] .djk-switch-knob { transform: translateX(26px); }
+.djk-switch[aria-checked="true"] .djk-switch-track { background: var(--accent-soft); }
+
+/* ---------- Led / Status ---------- */
+.djk-led {
+  display: inline-block; width: 9px; height: 9px; border-radius: 50%; flex: none;
+  background: var(--led-off); box-shadow: inset 0 1px 1px rgba(0,0,0,.35);
+  transition: background-color 120ms, box-shadow 120ms;
+}
+.djk-led.is-on { background: radial-gradient(circle at 35% 35%, #d4ffe2, var(--led-on) 60%); box-shadow: 0 0 9px var(--led-on), 0 0 2px var(--led-on); }
+.djk-led.is-warn { background: radial-gradient(circle at 35% 35%, #fff0c9, var(--led-warn) 60%); box-shadow: 0 0 9px var(--led-warn); }
+.djk-status { display: inline-flex; align-items: center; gap: var(--space-2); font: 500 12px/1.2 var(--font-mono); color: var(--ink-2); }
+.djk-statusbox { padding: 14px; border-radius: 10px; background: var(--well); box-shadow: var(--sink); display: grid; gap: 10px; }
+.djk-pipeline { display: flex; flex-wrap: wrap; gap: 10px 16px; }
+
+/* ---------- Lcd ---------- */
+.djk-lcd {
+  position: relative; overflow: hidden;
+  background: var(--screen); border-radius: var(--radius-screen);
+  box-shadow: var(--sink), 0 0 0 3px var(--case-lo);
+  color: var(--phosphor); font-family: var(--font-screen); font-size: 26px; line-height: 1.2;
+  text-shadow: 0 0 7px var(--phosphor-glow);
+  padding: 12px 14px;
+}
+.djk-lcd::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(0,0,0,.45));
+}
+.djk-seg { display: inline-grid; font-size: 48px; line-height: 1; }
+.djk-seg > * { grid-area: 1 / 1; text-align: right; }
+.djk-seg .djk-ghost { color: var(--phosphor-dim); text-shadow: none; }
+.djk-lcd-cap { display: block; font-size: 17px; line-height: 1.15; letter-spacing: .08em; opacity: .85; margin-top: 4px; }
+.djk-cursor {
+  display: inline-block; width: .55em; height: .9em; margin-left: 2px; vertical-align: -.08em;
+  background: var(--phosphor); box-shadow: 0 0 7px var(--phosphor-glow);
+  animation: djk-blink 1s steps(1) infinite;
+}
+@keyframes djk-blink { 50% { opacity: 0; } }
+.djk-lcd-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+
+/* ---------- Chip ---------- */
+.djk-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.djk-chip {
+  font: 500 12px/1 var(--font-mono);
+  padding: 6px 8px 5px; border-radius: var(--radius-chip);
+  background: var(--cap); color: var(--ink-2);
+  box-shadow: 0 var(--depth-chip) 0 var(--cap-side), inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+/* ---------- Field ---------- */
+.djk-field { display: grid; gap: 6px; }
+.djk-field label { font: 600 12px/1 var(--font-display); font-stretch: 112%; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+.djk-field input, .djk-field textarea {
+  font: 400 16px/1.4 var(--font-body); color: var(--ink);
+  background: var(--well); border: 0; border-radius: var(--radius-screen); padding: 12px 14px;
+  box-shadow: var(--sink); width: 100%;
+}
+.djk-field input::placeholder, .djk-field textarea::placeholder { color: var(--ink-2); opacity: .8; }
+.djk-field input:focus, .djk-field textarea:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+.djk-field-error { font: 500 12px/1.3 var(--font-mono); color: var(--ink); display: flex; gap: 8px; align-items: center; }
+
+/* ---------- Panel ---------- */
+.djk-panel {
+  position: relative; background: var(--case); border-radius: var(--radius-panel);
+  box-shadow: var(--raise); padding: clamp(20px, 3.4vw, 36px); display: grid; gap: var(--space-5); min-width: 0;
+}
+.djk-tile { padding: 18px; border-radius: var(--radius-tile); background: var(--case-hi); box-shadow: 0 1px 0 var(--line); display: grid; gap: 10px; }
+.djk-screw {
+  position: absolute; width: 11px; height: 11px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--case-hi), var(--case-lo) 85%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.18), 0 1px 0 var(--hl);
+}
+.djk-screw::after { content: ""; position: absolute; left: 2px; right: 2px; top: 5px; height: 1px; background: rgba(0,0,0,.45); transform: rotate(var(--rot, 35deg)); }
+.djk-screw.tl { top: 12px; left: 12px; } .djk-screw.tr { top: 12px; right: 12px; --rot: -20deg; }
+.djk-screw.bl { bottom: 12px; left: 12px; --rot: 70deg; } .djk-screw.br { bottom: 12px; right: 12px; --rot: 10deg; }
+.djk-grille { height: 26px; border-radius: 6px; opacity: .55; box-shadow: var(--sink); background: repeating-linear-gradient(90deg, var(--case-lo) 0 3px, transparent 3px 8px); }
+
+/* ---------- ProjectModule ---------- */
+.djk-module {
+  position: relative; background: var(--case); border-radius: var(--radius-module) var(--radius-module) 10px 10px;
+  box-shadow: var(--raise); padding: 14px 14px 16px; display: grid; gap: 14px; align-content: start; min-width: 0;
+}
+.djk-module-grip { height: 9px; margin: 0 28%; border-radius: 3px; opacity: .6; background: repeating-linear-gradient(90deg, var(--case-lo) 0 2px, transparent 2px 6px); }
+.djk-label { background: var(--paper); color: var(--paper-ink); border-radius: 6px; overflow: hidden; box-shadow: 0 1px 0 rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06); }
+.djk-label-band { height: 8px; background: var(--tone, var(--accent)); }
+.djk-label-body { padding: 12px 14px 14px; display: grid; gap: 6px; }
+.djk-label-kicker { font: 600 11px/1 var(--font-display); font-stretch: 112%; letter-spacing: .14em; text-transform: uppercase; color: var(--paper-muted); }
+.djk-label-title { font: 800 20px/1.05 var(--font-display); font-stretch: 116%; }
+.djk-module p { margin: 0; font-size: 14px; line-height: 22px; color: var(--ink-2); }
+.djk-module-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 10px; }
+
+/* ---------- Monitor ---------- */
+.djk-monitor { background: var(--case); border-radius: 16px; box-shadow: var(--raise); padding: 12px 12px 14px; display: grid; gap: 12px; min-width: 0; }
+.djk-monitor-screen {
+  position: relative; aspect-ratio: 16 / 9; max-width: 100%; overflow: hidden;
+  background: var(--screen); border-radius: var(--radius-tile) / 14px;
+  box-shadow: var(--sink), 0 0 0 3px var(--case-lo);
+  display: grid; place-content: center; text-align: center; gap: 4px; padding: 12px;
+  color: var(--phosphor); font-family: var(--font-screen); text-shadow: 0 0 7px var(--phosphor-glow);
+}
+.djk-monitor-screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.djk-monitor-screen::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px), radial-gradient(ellipse at 50% 45%, transparent 50%, rgba(0,0,0,.55));
+}
+.djk-monitor-domain { font-size: 27px; line-height: 1; }
+.djk-monitor-note { font-size: 16px; opacity: .6; }
+.djk-monitor-chin { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; padding: 0 4px; flex-wrap: wrap; }
+.djk-monitor-chin h4 { margin: 0; font: 750 16px/1.1 var(--font-display); font-stretch: 116%; }
+.djk-monitor-chin p { margin: 2px 0 0; font: 400 12px/1.4 var(--font-mono); color: var(--ink-2); }
+
+/* ---------- Service ---------- */
+.djk-services { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--space-4); }
+.djk-service {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: start;
+  padding: 18px; border-radius: var(--radius-tile); background: var(--case-hi); box-shadow: 0 1px 0 var(--line);
+}
+.djk-service-cap {
+  width: 44px; height: 42px; border-radius: var(--radius-key-sm);
+  display: grid; place-items: center;
+  font: 800 16px/1 var(--font-display); font-stretch: 112%; color: var(--ink);
+  background: var(--cap);
+  box-shadow: 0 var(--depth-key-sm) 0 var(--cap-side), inset 0 1px 0 rgba(255,255,255,.3);
+  margin-bottom: var(--depth-key-sm);
+}
+.djk-service h3 { margin: 0 0 4px; font: 700 18px/1.15 var(--font-display); font-stretch: 112%; }
+.djk-service p { margin: 0; font-size: 14px; line-height: 22px; color: var(--ink-2); }
+.djk-service .djk-chips { margin-top: 10px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .djk-key, .djk-switch-knob, .djk-led { transition: none; }
+  .djk-cursor { animation: none; }
+}

@@ -1,0 +1,40 @@
+{
+  "name": "djk1-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Đurađ Manojlović — bilingual freelance portfolio (DJK-1 design system), Next.js on Cloudflare Workers.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "tokens": "node scripts/build-tokens.mjs",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "e2e": "playwright test"
+  },
+  "dependencies": {
+    "next": "16.4.6",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^9.39.0",
+    "eslint-config-next": "16.4.6",
+    "prettier": "^3.10.1",
+    "sharp": "^0.34.5",
+    "typescript": "6.0.3",
+    "vitest": "^3.2.4"
+  }
+}
