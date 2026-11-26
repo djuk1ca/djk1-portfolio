@@ -63,7 +63,8 @@ One-time setup (Đurađ):
    - Deploy command: `npm run cf:deploy`
    - Build variables: none needed
 4. **Worker → Settings → Variables and Secrets** (runtime, type *Secret*): `TURNSTILE_SECRET`, `RESEND_API_KEY`
-   (from resend.com; the shared sender only delivers to your Resend account email), `IP_SALT` (any long random string).
+   (from resend.com), `IP_SALT` (any long random string) and `NOTIFY_EMAIL` (where inquiries are emailed; until a
+   domain is verified in Resend, this must be the email your Resend account is registered with).
 5. *Retry build* (or push). Then Worker → Settings → enable Web Analytics (no cookies, no banner needed).
 
 Manual deploy from your machine instead: `npx wrangler login`, `export SITE_URL=… TURNSTILE_SITE_KEY=…`,

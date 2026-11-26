@@ -17,9 +17,7 @@
       "migrations_dir": "migrations"
     }
   ],
-  "vars": {
-    // SITE_URL and TURNSTILE_SITE_KEY are build-time values (prerendered pages): see scripts/cf-build.mjs.
-    "NOTIFY_EMAIL": "djuradj.manojlovic04@gmail.com"
-  }
-  // Secrets (wrangler secret put …): TURNSTILE_SECRET, RESEND_API_KEY, IP_SALT
+  // SITE_URL and TURNSTILE_SITE_KEY are build-time values (prerendered pages): see scripts/cf-build.mjs.
+  // Secrets (dashboard → Variables and Secrets, type Secret): TURNSTILE_SECRET, RESEND_API_KEY, IP_SALT,
+  // NOTIFY_EMAIL (where inquiries are emailed; with Resend's shared sender it must be the Resend account email).
 }
