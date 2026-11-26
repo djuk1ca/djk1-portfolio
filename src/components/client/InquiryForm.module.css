@@ -50,3 +50,7 @@
 .sent h3 {
   margin: 0;
 }
+
+.turnstile:empty {
+  display: none;
+}

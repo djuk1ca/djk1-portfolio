@@ -1,9 +1,10 @@
 import type { Dictionary } from './en';
 
 export const sr: Dictionary = {
-  brand: 'ĐM · DJK-1',
+  brand: 'DJK-1 · Novi Sad',
   nav: {
     label: 'Sekcije',
+    home: 'Početna',
     services: 'Usluge',
     work: 'Radovi',
     projects: 'Projekti',

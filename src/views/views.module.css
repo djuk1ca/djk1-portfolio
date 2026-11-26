@@ -152,7 +152,7 @@
   font-stretch: 112%;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink-3);
+  color: var(--ink-2);
   margin-right: var(--space-2);
 }
 @media (max-width: 900px) {

@@ -21,7 +21,10 @@
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "db:migrate:local": "wrangler d1 migrations apply djk1-inquiries --local",
     "db:migrate:remote": "wrangler d1 migrations apply djk1-inquiries --remote",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "screenshots": "node scripts/screenshots.mjs",
+    "og": "node scripts/og-images.mjs"
   },
   "dependencies": {
     "next": "16.4.6",
@@ -38,6 +41,7 @@
     "@types/react-dom": "^19.3.0",
     "eslint": "^9.39.0",
     "eslint-config-next": "16.4.6",
+    "lighthouse": "^13.6.0",
     "prettier": "^3.10.1",
     "sharp": "^0.34.5",
     "typescript": "6.0.3",

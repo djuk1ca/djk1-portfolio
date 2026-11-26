@@ -1,7 +1,8 @@
 export const en = {
-  brand: 'ĐM · DJK-1',
+  brand: 'DJK-1 · Novi Sad',
   nav: {
     label: 'Sections',
+    home: 'Home',
     services: 'Services',
     work: 'Work',
     projects: 'Projects',

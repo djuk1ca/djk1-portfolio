@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { Field, Key, LcdNumber, Monitor, Panel, ProjectModule, ServiceTile, Status } from '@/components/djk';
+import { Field, Key, Keycap, LcdNumber, Logo, Monitor, Panel, ProjectModule, ServiceTile, Status } from '@/components/djk';
 import { getProject, getWork, SERVICES } from '@/content';
 import { getDictionary } from '@/i18n/dictionaries';
 
@@ -102,6 +102,24 @@ describe('ServiceTile', () => {
     const out = html(<ServiceTile service={SERVICES[2]} locale="sr" />);
     expect(out).toContain('<span class="djk-service-cap" aria-hidden="true">M</span>');
     expect(out).toContain('Mobilne aplikacije');
+  });
+});
+
+describe('Keycap', () => {
+  it('has a compact, single-row variant for the header', () => {
+    const out = html(<Keycap n={2} label="Work" href="#work" compact />);
+    expect(out).toContain('class="djk-key djk-kc djk-kc--compact djk-key--sm"');
+    expect(out).toContain('data-key="2"');
+  });
+});
+
+describe('Logo', () => {
+  it('draws the Đ keycap mark next to the name', () => {
+    const out = html(<Logo name="Đurađ Manojlović" tagline="DJK-1 · Novi Sad" />);
+    expect(out).toContain('<svg');
+    expect(out).toContain('class="djk-logo-mark"');
+    expect(out).toContain('Đurađ Manojlović');
+    expect(out).toContain('DJK-1 · Novi Sad');
   });
 });
 

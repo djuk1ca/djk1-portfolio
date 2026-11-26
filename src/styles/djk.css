@@ -19,7 +19,7 @@
 
 .djk-eyebrow {
   font: 600 12px/1 var(--font-display); font-stretch: 112%;
-  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
+  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2);
 }
 .djk-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: flex-end; }
 
@@ -240,3 +240,21 @@
 /* A checkbox styled as a key (form choices): pressed while checked, works without JavaScript. */
 .djk-key:has(input:checked) { --top: var(--accent); --side: var(--accent-side); --fg: var(--on-accent); }
 .djk-key:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* Compact keycap: one row, small-key height (header navigation). */
+.djk-kc.djk-kc--compact { width: auto; height: auto; flex-direction: row; align-items: center; gap: .55em; padding: .6rem .8rem; }
+.djk-kc--compact b { font-size: 11px; opacity: .7; }
+.djk-kc--compact span { font-size: 12px; }
+
+/* Logo: the Đ keycap mark + name. */
+.djk-logo { display: inline-flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; }
+.djk-logo-mark { flex: none; filter: drop-shadow(0 4px 5px var(--shadow-tint)); }
+.djk-logo-side { fill: var(--accent-side); }
+.djk-logo-top { fill: var(--accent); }
+.djk-logo-dish { fill: #ffffff; opacity: .09; }
+.djk-logo-legend { fill: var(--on-accent); }
+.djk-logo-sub { opacity: .75; }
+.djk-logo-text { display: grid; gap: 3px; }
+.djk-logo-name { font: 800 16px/1 var(--font-display); font-stretch: 116%; letter-spacing: -.005em; white-space: nowrap; }
+.djk-logo-tag { font: 500 11px/1 var(--font-mono); color: var(--ink-2); letter-spacing: .04em; white-space: nowrap; }
+a:hover .djk-logo-mark { transform: translateY(1px); }

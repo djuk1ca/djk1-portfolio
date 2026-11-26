@@ -1,5 +1,6 @@
 export { Key, keyClass } from './Key';
 export { Keycap } from './Keycap';
+export { Logo, LogoMark } from './Logo';
 export { Led, Status, type LedState } from './Status';
 export { Lcd, LcdNumber, LcdGrid, Cursor } from './Lcd';
 export { Chips } from './Chips';

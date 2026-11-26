@@ -1,7 +1,6 @@
 'use client';
 
-import Script from 'next/script';
-import { useActionState } from 'react';
+import { useActionState, useRef, type FormEvent } from 'react';
 import { Field } from '@/components/djk/Field';
 import { Status } from '@/components/djk/Status';
 import type { Dictionary } from '@/i18n/dictionaries';
@@ -10,6 +9,7 @@ import { submitInquiry } from '@/lib/inquiry/action';
 import type { InquiryState } from '@/lib/inquiry/handle';
 import { HONEYPOT_FIELD, PROJECT_TYPES } from '@/lib/inquiry/schema';
 import styles from './InquiryForm.module.css';
+import { useTurnstile } from './useTurnstile';
 
 const INITIAL: InquiryState = { status: 'idle' };
 
@@ -17,6 +17,20 @@ export function InquiryForm({ locale, dict, siteKey, email }: { locale: Locale; 
   const [state, formAction, pending] = useActionState(submitInquiry, INITIAL);
   const t = dict.contact;
   const err = state.fieldErrors ?? {};
+  const { setContainer, start, waitForToken, hasToken } = useTurnstile(siteKey, locale);
+  const waiting = useRef(false);
+
+  // With JavaScript, a submit waits for the spam-check token instead of going out without one.
+  function onSubmit(e: FormEvent<HTMLFormElement>) {
+    if (hasToken() || waiting.current) return;
+    e.preventDefault();
+    waiting.current = true;
+    const form = e.currentTarget;
+    waitForToken().then(() => {
+      form.requestSubmit();
+      waiting.current = false;
+    });
+  }
 
   if (state.status === 'sent')
     return (
@@ -27,8 +41,14 @@ export function InquiryForm({ locale, dict, siteKey, email }: { locale: Locale; 
     );
 
   return (
-    <form action={formAction} className={`djk-panel ${styles.form}`} noValidate>
-      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" strategy="afterInteractive" async defer />
+    <form
+      action={formAction}
+      onSubmit={onSubmit}
+      onFocus={start}
+      onPointerDown={start}
+      className={`djk-panel ${styles.form}`}
+      noValidate
+    >
       <input type="hidden" name="locale" value={locale} />
       <div className={styles.honeypot} aria-hidden="true">
         <label htmlFor={HONEYPOT_FIELD}>Company website</label>
@@ -73,7 +93,7 @@ export function InquiryForm({ locale, dict, siteKey, email }: { locale: Locale; 
         <textarea id="inquiry-message" name="message" rows={5} placeholder={t.placeholders.message} maxLength={5000} />
       </Field>
 
-      <div className="cf-turnstile" data-sitekey={siteKey} data-language={locale} data-theme="auto" />
+      <div ref={setContainer} className={styles.turnstile} />
 
       {state.formError && (
         <p className={styles.formError} role="alert">
