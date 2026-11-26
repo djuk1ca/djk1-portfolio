@@ -72,18 +72,18 @@ export const WORKS: Work[] = [
     },
   },
   {
-    // TODO(Đurađ): confirm wording with the client (CV: frontend features, 15+ screens).
     slug: 'broker-auditor',
     name: 'Broker Auditor',
-    domain: 'brokerauditor.com',
-    url: 'https://brokerauditor.com',
+    // The first version of the product, built by Đurađ; not the client's current official site.
+    domain: 'broker-auditory-fe.vercel.app',
+    url: 'https://broker-auditory-fe.vercel.app/',
     featured: false,
     period: { en: 'Oct 2024 – Apr 2025', sr: 'okt 2024 – apr 2025' },
     role: { en: 'Frontend developer, remote team', sr: 'Frontend developer, tim na daljinu' },
     kind: { en: 'US freight reviews · React, Tailwind', sr: 'Recenzije u US transportu · React, Tailwind' },
     summary: {
-      en: 'Production frontend features for a US freight platform where carriers review freight brokers.',
-      sr: 'Frontend funkcije za američku platformu na kojoj prevoznici ocenjuju brokere tereta.',
+      en: 'The first version of the frontend for a US freight platform where carriers review freight brokers.',
+      sr: 'Prva verzija frontenda za američku platformu na kojoj prevoznici ocenjuju brokere tereta.',
     },
     stack: ['JavaScript', 'React', 'Tailwind CSS'],
     metrics: [],
@@ -99,7 +99,7 @@ export const WORKS: Work[] = [
         {
           heading: 'My part',
           body: [
-            'For seven months I worked remotely in a distributed team across time zones and implemented more than 15 screens in React and Tailwind CSS.',
+            'I built the first version of the frontend: for seven months I worked remotely in a distributed team across time zones and implemented more than 15 screens in React and Tailwind CSS.',
             'Requirements changed often; my job was to turn them into working UI quickly and keep it consistent with the rest of the product.',
           ],
         },
@@ -114,7 +114,7 @@ export const WORKS: Work[] = [
         {
           heading: 'Moj deo',
           body: [
-            'Sedam meseci sam radio na daljinu u timu raspoređenom po vremenskim zonama i napravio više od 15 ekrana u React-u i Tailwind CSS-u.',
+            'Napravio sam prvu verziju frontenda: sedam meseci sam radio na daljinu u timu raspoređenom po vremenskim zonama i napravio više od 15 ekrana u React-u i Tailwind CSS-u.',
             'Zahtevi su se često menjali; moj posao je bio da ih brzo pretvorim u UI koji radi i da ostane usklađen sa ostatkom proizvoda.',
           ],
         },

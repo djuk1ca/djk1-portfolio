@@ -7,7 +7,7 @@ import sharp from 'sharp';
 
 const SITES = {
   usluzionica: 'https://usluzionica.rs',
-  'broker-auditor': 'https://brokerauditor.com',
+  'broker-auditor': 'https://broker-auditory-fe.vercel.app/',
   'md-mont': 'https://mdmont.rs',
   kaneko: 'https://kaneko-eeu.com',
   simplice: 'https://simplicebeautylounge.com',
