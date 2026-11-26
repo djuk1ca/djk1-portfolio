@@ -33,6 +33,11 @@ export function WorkPage({ locale, slug }: { locale: Locale; slug: string }) {
             {work.period[locale]}
           </span>
         </p>
+        <div className="djk-row">
+          <Key href={work.url} external>
+            {work.domain}
+          </Key>
+        </div>
       </header>
 
       <Monitor work={work} locale={locale} dict={dict} eager />
