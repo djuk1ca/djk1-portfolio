@@ -25,7 +25,7 @@
     "lighthouse": "node scripts/lighthouse.mjs",
     "screenshots": "node scripts/screenshots.mjs",
     "og": "node scripts/og-images.mjs",
-    "cf:build": "node scripts/check-deploy-env.mjs && opennextjs-cloudflare build",
+    "cf:build": "node scripts/cf-build.mjs",
     "cf:deploy": "opennextjs-cloudflare deploy"
   },
   "dependencies": {

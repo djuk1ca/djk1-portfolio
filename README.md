@@ -48,20 +48,20 @@ npx wrangler d1 execute djk1-inquiries --remote --command "SELECT * FROM inquiri
 The Worker `djk1-portfolio` is connected to this GitHub repo in the Cloudflare dashboard; every push to `main`
 builds and deploys there. GitHub Actions only runs the tests.
 
-`SITE_URL` and `TURNSTILE_SITE_KEY` are **build-time** variables: pages are prerendered, so they are baked in at
-build. `npm run cf:build` stops while either is missing, points at localhost or is the Turnstile test key.
+`SITE_URL` and `TURNSTILE_SITE_KEY` are **build-time** values: pages are prerendered, so they are baked in at build.
+Their production values are set in `scripts/cf-build.mjs` (both are public); build variables in the dashboard override
+them. `npm run cf:build` stops if either points at localhost or is the Turnstile test key.
 
 One-time setup (Đurađ):
 
-1. **D1 database:** Storage & Databases → D1 → *Create* `djk1-inquiries`. Copy its **Database ID** into
-   `wrangler.jsonc` → `d1_databases[0].database_id` and push. Then open the database → *Console*, paste the
-   contents of `migrations/0001_inquiries.sql` and run it once.
-2. **Turnstile:** Turnstile → *Add widget* for the host `djk1-portfolio.<your-subdomain>.workers.dev`
-   (later also the custom domain). Keep the **site key** and the **secret key**.
+1. **D1 database** `djk1-inquiries` (ID already in `wrangler.jsonc`): open it → *Console*, paste the contents of
+   `migrations/0001_inquiries.sql` and run it once.
+2. **Turnstile** widget for `djk1-portfolio.djuradj-manojlovic04.workers.dev` (site key already in
+   `scripts/cf-build.mjs`; add the custom domain to the widget later). Keep its **secret key** for step 4.
 3. **Worker → Settings → Build:**
    - Build command: `npm run cf:build`
    - Deploy command: `npm run cf:deploy`
-   - Build variables: `SITE_URL` = `https://djk1-portfolio.<your-subdomain>.workers.dev`, `TURNSTILE_SITE_KEY` = the site key
+   - Build variables: none needed
 4. **Worker → Settings → Variables and Secrets** (runtime, type *Secret*): `TURNSTILE_SECRET`, `RESEND_API_KEY`
    (from resend.com; the shared sender only delivers to your Resend account email), `IP_SALT` (any long random string).
 5. *Retry build* (or push). Then Worker → Settings → enable Web Analytics (no cookies, no banner needed).
@@ -71,4 +71,4 @@ Manual deploy from your machine instead: `npx wrangler login`, `export SITE_URL=
 
 ## Moving to a custom domain
 
-Add the domain under the Worker's *Domains & Routes*, set the `SITE_URL` build variable to it, add the domain to the Turnstile widget, redeploy, and redirect the `workers.dev` address to the domain (301) so search engines carry the pages over. Then submit `https://<domain>/sitemap.xml` in Google Search Console.
+Add the domain under the Worker's *Domains & Routes*, change `SITE_URL` in `scripts/cf-build.mjs` to it, add the domain to the Turnstile widget, redeploy, and redirect the `workers.dev` address to the domain (301) so search engines carry the pages over. Then submit `https://<domain>/sitemap.xml` in Google Search Console.

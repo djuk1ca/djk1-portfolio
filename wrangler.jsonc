@@ -13,13 +13,12 @@
     {
       "binding": "DB",
       "database_name": "djk1-inquiries",
-      // Replace with the id printed by `npx wrangler d1 create djk1-inquiries` before the first deploy.
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "20a81d40-8585-4e49-b785-f8675f1a1965",
       "migrations_dir": "migrations"
     }
   ],
   "vars": {
-    // SITE_URL and TURNSTILE_SITE_KEY are build-time env vars (prerendered pages), not set here. See README.
+    // SITE_URL and TURNSTILE_SITE_KEY are build-time values (prerendered pages): see scripts/cf-build.mjs.
     "NOTIFY_EMAIL": "djuradj.manojlovic04@gmail.com"
   }
   // Secrets (wrangler secret put …): TURNSTILE_SECRET, RESEND_API_KEY, IP_SALT
