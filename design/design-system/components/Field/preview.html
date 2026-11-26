@@ -1,0 +1,34 @@
+<!-- @dsCard group="Forme" height=430 subtitle="Forma za upit klijenta" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Field</title><style>html,body{margin:0}body{padding:20px}</style></head>
+<body class="djk-root">
+<form id="f" style="display:grid;gap:16px;max-width:520px" novalidate>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
+    <div class="djk-field"><label for="n">Your name</label><input id="n" type="text" autocomplete="name" placeholder="Ana Petrović"></div>
+    <div class="djk-field"><label for="e">Email</label><input id="e" type="email" autocomplete="email" placeholder="ana@company.com"></div>
+  </div>
+  <div class="djk-field">
+    <label id="t-l">What do you need?</label>
+    <div class="djk-row" role="group" aria-labelledby="t-l" id="types">
+      <button class="djk-key djk-key--sm" type="button" aria-pressed="true">Website</button>
+      <button class="djk-key djk-key--sm" type="button" aria-pressed="false">Web app</button>
+      <button class="djk-key djk-key--sm" type="button" aria-pressed="false">Mobile app</button>
+      <button class="djk-key djk-key--sm" type="button" aria-pressed="false">Backend / API</button>
+      <button class="djk-key djk-key--sm" type="button" aria-pressed="false">AI &amp; embeddings</button>
+    </div>
+  </div>
+  <div class="djk-field"><label for="m">About the project</label><textarea id="m" rows="3" placeholder="We need a site for our dental clinic, in Serbian and English…"></textarea></div>
+  <div class="djk-row" style="justify-content:space-between;align-items:center">
+    <span class="djk-status" id="s"><i class="djk-led is-on"></i>reply within 24h</span>
+    <button class="djk-key djk-key--accent" type="submit">Send inquiry</button>
+  </div>
+</form>
+<script>
+document.querySelectorAll('#types .djk-key').forEach(function (b) { b.addEventListener('click', function () { b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); }); });
+document.getElementById('f').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var email = document.getElementById('e').value.trim(), s = document.getElementById('s');
+  s.innerHTML = /.+@.+\..+/.test(email) ? '<i class="djk-led is-warn"></i>preview only, nothing sent' : '<i class="djk-led is-warn"></i>add an email so I can reply';
+});
+</script>
+</body></html>

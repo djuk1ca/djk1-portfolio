@@ -1,0 +1,78 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<title>DJK-1</title>
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--desk); color: var(--ink); font-family: var(--font-body); overflow: hidden; }
+  .cover { position: relative; height: 288px; overflow: hidden; }
+  .art { position: absolute; top: 0; left: 480px; width: 480px; height: 288px; overflow: hidden; }
+  .art svg { display: block; width: 480px; height: 288px; }
+  .bezel { fill: var(--cap); }
+  .scr { fill: var(--screen); }
+  .ph { fill: var(--phosphor); }
+  .phd { fill: var(--phosphor-dim); }
+  .cap { fill: var(--cap); } .cap-s { fill: var(--cap-side); }
+  .mod { fill: var(--mod); } .mod-s { fill: var(--mod-side); }
+  .acc { fill: var(--accent); } .acc-s { fill: var(--accent-side); }
+  .k { rx: var(--radius-key); }
+  .t { rx: var(--radius-tile); }
+  .s { rx: var(--radius-screen); }
+  .seg { rx: 2px; }
+  .words { position: absolute; left: var(--space-7); bottom: var(--space-7); max-width: 440px; }
+  .name { margin: 0; font-family: var(--font-display); font-size: 104px; line-height: .92; font-weight: 900; font-stretch: 118%; letter-spacing: -.02em; color: var(--ink); }
+  .tag { margin: var(--space-3) 0 0 4px; font-size: 14px; line-height: 20px; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<div class="cover">
+<div class="art" aria-hidden="true">
+<svg viewBox="0 0 480 288" width="480" height="288">
+<!--
+  blocks      screen 460×60 in a cap bezel 472×80 bleeding off the right (the LCD) · accent 52 and 108 wide (the one primary key, Enter and a long key) · mod 48/76/104 wide (modifiers) · cap keys for the rest; ≈45% of 960×288
+  arrangement a keyboard: one screen band on top, three rows of keys below, every row bleeding off the right edge like a deck cut off by the frame
+  pattern     keycap tiles from "geometric, modular, dense UI": 48×42 keys on a 56 pitch (space-8), merged two- and five-wide like real modifiers and the space bar; each key a top plus a side rect depth-key (6px) lower
+  scales      pitch space-8 (56), gaps space-2 (8), depth depth-key (6); corners radius-key on keys, radius-tile on the bezel, radius-screen on the screen; phosphor segments 40×12 like the ghost "888" digits
+-->
+<rect class="bezel t" x="8" y="12" width="480" height="80" rx="12"/>
+<rect class="scr s" x="20" y="22" width="468" height="60" rx="8"/>
+<rect class="ph seg" x="40" y="46" width="40" height="12" rx="2"/>
+<rect class="ph seg" x="88" y="46" width="40" height="12" rx="2"/>
+<rect class="ph seg" x="136" y="46" width="40" height="12" rx="2"/>
+<rect class="phd seg" x="184" y="46" width="40" height="12" rx="2"/>
+<rect class="phd seg" x="232" y="46" width="40" height="12" rx="2"/>
+<rect class="ph seg" x="284" y="40" width="10" height="24" rx="2"/>
+
+<rect class="mod-s k" x="8" y="110" width="48" height="42" rx="9"/><rect class="mod k" x="8" y="104" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="64" y="110" width="48" height="42" rx="9"/><rect class="cap k" x="64" y="104" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="120" y="110" width="48" height="42" rx="9"/><rect class="cap k" x="120" y="104" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="176" y="110" width="48" height="42" rx="9"/><rect class="cap k" x="176" y="104" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="232" y="110" width="48" height="42" rx="9"/><rect class="cap k" x="232" y="104" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="288" y="110" width="48" height="42" rx="9"/><rect class="cap k" x="288" y="104" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="344" y="110" width="48" height="42" rx="9"/><rect class="cap k" x="344" y="104" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="400" y="110" width="48" height="42" rx="9"/><rect class="cap k" x="400" y="104" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="456" y="110" width="48" height="42" rx="9"/><rect class="cap k" x="456" y="104" width="48" height="42" rx="9"/>
+
+<rect class="mod-s k" x="8" y="166" width="76" height="42" rx="9"/><rect class="mod k" x="8" y="160" width="76" height="42" rx="9"/>
+<rect class="cap-s k" x="92" y="166" width="48" height="42" rx="9"/><rect class="cap k" x="92" y="160" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="148" y="166" width="48" height="42" rx="9"/><rect class="cap k" x="148" y="160" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="204" y="166" width="48" height="42" rx="9"/><rect class="cap k" x="204" y="160" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="260" y="166" width="48" height="42" rx="9"/><rect class="cap k" x="260" y="160" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="316" y="166" width="48" height="42" rx="9"/><rect class="cap k" x="316" y="160" width="48" height="42" rx="9"/>
+<rect class="cap-s k" x="372" y="166" width="48" height="42" rx="9"/><rect class="cap k" x="372" y="160" width="48" height="42" rx="9"/>
+<rect class="acc-s k" x="428" y="166" width="60" height="42" rx="9"/><rect class="acc k" x="428" y="160" width="60" height="42" rx="9"/>
+
+<rect class="mod-s k" x="8" y="222" width="104" height="42" rx="9"/><rect class="mod k" x="8" y="216" width="104" height="42" rx="9"/>
+<rect class="cap-s k" x="120" y="222" width="244" height="42" rx="9"/><rect class="cap k" x="120" y="216" width="244" height="42" rx="9"/>
+<rect class="acc-s k" x="372" y="222" width="116" height="42" rx="9"/><rect class="acc k" x="372" y="216" width="116" height="42" rx="9"/>
+</svg>
+</div>
+<div class="words">
+<h1 class="name">DJK-1</h1>
+<p class="tag">Retro oprema za freelance portfolio: kit plastika, mehanički tasteri, ambar ekran.</p>
+</div>
+</div>
+</body>
+</html>

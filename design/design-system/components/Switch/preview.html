@@ -1,0 +1,12 @@
+<!-- @dsCard group="Kontrole" height=110 -->
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Switch</title><style>html,body{margin:0}body{padding:20px}</style></head>
+<body class="djk-root">
+<div class="djk-row" style="gap:24px;align-items:center">
+  <button class="djk-switch" role="switch" aria-checked="false"><span class="djk-switch-track"><span class="djk-switch-knob"></span></span>Graphite</button>
+  <button class="djk-switch" role="switch" aria-checked="true"><span class="djk-switch-track"><span class="djk-switch-knob"></span></span>Key sound</button>
+</div>
+<script>
+document.querySelectorAll('.djk-switch').forEach(function (s) { s.addEventListener('click', function () { s.setAttribute('aria-checked', String(s.getAttribute('aria-checked') !== 'true')); }); });
+</script>
+</body></html>

@@ -1,0 +1,1021 @@
+<title>DJK-1 Portfolio Sistem</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=VT323&display=swap">
+<style>
+/* Layout: jedno "kućište" od 1120px; sekcije su paneli na stolu, taster-navigacija gore, makete u monitorima. */
+:root {
+  /* Boje — Kit (svetlo) */
+  --bg: #D9D7D0;
+  --case: #E7E5DF;
+  --case-hi: #F6F5F1;
+  --case-lo: #B8B4AA;
+  --well: #CDCAC2;
+  --cap: #F4F3EF;
+  --cap-side: #C2BEB4;
+  --mod: #7B7872;
+  --mod-side: #5A5752;
+  --mod-ink: #F4F3EF;
+  --ink: #1F1E1B;
+  --ink-2: #55524B;
+  --ink-3: #7E7A72;
+  --accent: #2D4BD2;
+  --accent-side: #1B3093;
+  --accent-ink: #FFFFFF;
+  --accent-soft: rgba(45, 75, 210, .12);
+  --screen: #16120A;
+  --phosphor: #FFB547;
+  --phosphor-dim: rgba(255, 181, 71, .13);
+  --phosphor-glow: rgba(255, 181, 71, .55);
+  --led-on: #2FBF66;
+  --led-warn: #F0A020;
+  --led-off: #9B978F;
+  --paper: #FBFAF6;
+  --paper-ink: #1F1E1B;
+  --line: rgba(31, 30, 27, .14);
+  --shadow: rgba(45, 38, 25, .30);
+  --hl: rgba(255, 255, 255, .55);
+
+  /* Tipografija */
+  --f-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --f-screen: "VT323", "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Skala: 12 / 14 / 16 / 20 / 26 / 34 / 48 / 64 */
+  --t-xs: .75rem; --t-sm: .875rem; --t-md: 1rem; --t-lg: 1.25rem;
+  --t-xl: 1.625rem; --t-2xl: 2.125rem; --t-3xl: 3rem; --t-4xl: clamp(2.6rem, 7vw, 4rem);
+
+  /* Dubina */
+  --d-key: 6px;
+  --d-key-sm: 4px;
+  --r-key: 9px;
+  --r-panel: 18px;
+  --raise:
+    inset 0 1px 0 var(--hl),
+    inset 0 -2px 0 rgba(0, 0, 0, .06),
+    0 2px 0 var(--case-lo),
+    0 22px 34px -22px var(--shadow);
+  --sink:
+    inset 0 2px 6px rgba(0, 0, 0, .30),
+    inset 0 -1px 0 var(--hl);
+
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17181B; --case: #222428; --case-hi: #2F3237; --case-lo: #0E0F11; --well: #131417;
+    --cap: #3B3E45; --cap-side: #1D1F23; --mod: #5B5F67; --mod-side: #32353B; --mod-ink: #EEECE7;
+    --ink: #ECEAE5; --ink-2: #ABA8A1; --ink-3: #7F7C76;
+    --accent: #5470F7; --accent-side: #2A3FA8; --accent-ink: #FFFFFF; --accent-soft: rgba(84, 112, 247, .18);
+    --screen: #0D0B06; --led-off: #45484E; --paper: #ECE9E1; --paper-ink: #1F1E1B;
+    --line: rgba(236, 234, 229, .12); --shadow: rgba(0, 0, 0, .65); --hl: rgba(255, 255, 255, .07);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17181B; --case: #222428; --case-hi: #2F3237; --case-lo: #0E0F11; --well: #131417;
+  --cap: #3B3E45; --cap-side: #1D1F23; --mod: #5B5F67; --mod-side: #32353B; --mod-ink: #EEECE7;
+  --ink: #ECEAE5; --ink-2: #ABA8A1; --ink-3: #7F7C76;
+  --accent: #5470F7; --accent-side: #2A3FA8; --accent-ink: #FFFFFF; --accent-soft: rgba(84, 112, 247, .18);
+  --screen: #0D0B06; --led-off: #45484E; --paper: #ECE9E1; --paper-ink: #1F1E1B;
+  --line: rgba(236, 234, 229, .12); --shadow: rgba(0, 0, 0, .65); --hl: rgba(255, 255, 255, .07);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--t-md)/1.6 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 80px;
+  display: grid;
+  gap: 28px;
+}
+h1, h2, h3, h4 { font-family: var(--f-display); font-stretch: 118%; line-height: 1.05; margin: 0; text-wrap: balance; }
+h2 { font-size: var(--t-2xl); font-weight: 800; letter-spacing: -.01em; }
+h3 { font-size: var(--t-lg); font-weight: 700; }
+p { margin: 0; max-width: 65ch; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+.eyebrow {
+  font: 600 var(--t-xs)/1 var(--f-display);
+  font-stretch: 112%;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.muted { color: var(--ink-2); }
+.mono { font-family: var(--f-mono); font-size: var(--t-sm); }
+
+/* ---------- Panel (kućište) ---------- */
+.panel {
+  position: relative;
+  background: var(--case);
+  border-radius: var(--r-panel);
+  box-shadow: var(--raise);
+  padding: clamp(20px, 3.4vw, 36px);
+  display: grid;
+  gap: 22px;
+  min-width: 0;
+}
+.panel-head { display: grid; gap: 10px; }
+.panel-head p { color: var(--ink-2); }
+.screw {
+  position: absolute; width: 11px; height: 11px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--case-hi), var(--case-lo) 85%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.18), 0 1px 0 var(--hl);
+}
+.screw::after {
+  content: ""; position: absolute; left: 2px; right: 2px; top: 5px; height: 1px;
+  background: rgba(0,0,0,.45); transform: rotate(var(--rot, 35deg));
+}
+.screw.tl { top: 12px; left: 12px; } .screw.tr { top: 12px; right: 12px; --rot: -20deg; }
+.screw.bl { bottom: 12px; left: 12px; --rot: 70deg; } .screw.br { bottom: 12px; right: 12px; --rot: 10deg; }
+.grille {
+  height: 26px; border-radius: 6px;
+  background: repeating-linear-gradient(90deg, var(--case-lo) 0 3px, transparent 3px 8px);
+  opacity: .55;
+  box-shadow: var(--sink);
+}
+
+/* ---------- Taster ---------- */
+.key {
+  --top: var(--cap); --side: var(--cap-side); --fg: var(--ink); --d: var(--d-key);
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: .5em;
+  font: 650 var(--t-sm)/1 var(--f-display);
+  font-stretch: 112%;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--fg);
+  padding: .9rem 1.15rem;
+  border: 0;
+  border-radius: var(--r-key);
+  background-color: var(--top);
+  background-image: linear-gradient(180deg, rgba(255,255,255,.20), rgba(255,255,255,0) 45%, rgba(0,0,0,.05));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.32),
+    inset 0 -1px 0 rgba(0,0,0,.10),
+    0 var(--d) 0 var(--side),
+    0 calc(var(--d) + 1px) 0 rgba(0,0,0,.20),
+    0 calc(var(--d) + 7px) 12px -3px var(--shadow);
+  margin-bottom: var(--d);
+  transform: translateY(0);
+  transition: transform 70ms cubic-bezier(.3,.7,.4,1), box-shadow 70ms cubic-bezier(.3,.7,.4,1);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.key::after {
+  content: ""; position: absolute; inset: 3px 5px 6px; border-radius: 6px;
+  background: radial-gradient(ellipse at 50% 25%, rgba(255,255,255,.16), transparent 70%);
+  pointer-events: none;
+}
+.key:active, .key.is-down {
+  transform: translateY(calc(var(--d) - 1px));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.22),
+    inset 0 -1px 0 rgba(0,0,0,.10),
+    0 1px 0 var(--side),
+    0 2px 0 rgba(0,0,0,.20),
+    0 3px 4px -1px var(--shadow);
+}
+.key--accent { --top: var(--accent); --side: var(--accent-side); --fg: var(--accent-ink); }
+.key--mod { --top: var(--mod); --side: var(--mod-side); --fg: var(--mod-ink); }
+.key--sm { --d: var(--d-key-sm); padding: .6rem .8rem; font-size: var(--t-xs); border-radius: 7px; }
+.key .arrow { font-family: var(--f-mono); font-weight: 500; letter-spacing: 0; }
+
+/* kvadratni taster sa legendom */
+.kc {
+  width: 76px; height: 68px;
+  flex-direction: column; align-items: flex-start; justify-content: space-between;
+  padding: 9px 10px 10px;
+  text-transform: none; letter-spacing: .02em;
+}
+.kc b { font: 500 var(--t-sm)/1 var(--f-mono); }
+.kc span { font: 600 .6875rem/1 var(--f-display); font-stretch: 105%; text-transform: uppercase; letter-spacing: .06em; }
+
+.keyrow { display: flex; flex-wrap: wrap; gap: 12px 10px; align-items: flex-end; }
+
+/* ---------- Prekidač ---------- */
+.switch {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: none; border: 0; padding: 4px; cursor: pointer; color: var(--ink);
+  font: 600 var(--t-xs)/1 var(--f-display); font-stretch: 112%; letter-spacing: .12em; text-transform: uppercase;
+}
+.switch-track {
+  position: relative; width: 58px; height: 28px; border-radius: 7px;
+  background: var(--well); box-shadow: var(--sink); flex: none;
+}
+.switch-knob {
+  position: absolute; top: 3px; left: 3px; width: 26px; height: 22px; border-radius: 5px;
+  background-color: var(--cap);
+  background-image: repeating-linear-gradient(90deg, rgba(0,0,0,.14) 0 1px, transparent 1px 4px);
+  background-size: 12px 12px; background-position: center; background-repeat: no-repeat;
+  box-shadow: 0 2px 0 var(--cap-side), 0 3px 5px var(--shadow), inset 0 1px 0 rgba(255,255,255,.3);
+  transition: transform 140ms cubic-bezier(.3,.7,.4,1);
+}
+.switch[aria-checked="true"] .switch-knob { transform: translateX(26px); }
+.switch[aria-checked="true"] .switch-track { background: var(--accent-soft); }
+
+/* ---------- LED ---------- */
+.led {
+  display: inline-block; width: 9px; height: 9px; border-radius: 50%; flex: none;
+  background: var(--led-off);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.35);
+  transition: background-color 120ms, box-shadow 120ms;
+}
+.led.on { background: radial-gradient(circle at 35% 35%, #D4FFE2, var(--led-on) 60%); box-shadow: 0 0 9px var(--led-on), 0 0 2px var(--led-on); }
+.led.warn { background: radial-gradient(circle at 35% 35%, #FFF0C9, var(--led-warn) 60%); box-shadow: 0 0 9px var(--led-warn); }
+.status { display: inline-flex; align-items: center; gap: 8px; font: 500 var(--t-xs)/1.2 var(--f-mono); color: var(--ink-2); }
+
+/* ---------- LCD ekran ---------- */
+.lcd {
+  position: relative; overflow: hidden;
+  background: var(--screen);
+  border-radius: 8px;
+  box-shadow: var(--sink), 0 0 0 3px var(--case-lo);
+  color: var(--phosphor);
+  font-family: var(--f-screen);
+  text-shadow: 0 0 7px var(--phosphor-glow);
+  padding: 12px 14px;
+}
+.lcd::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(0,0,0,.45));
+}
+.seg { display: inline-grid; line-height: 1; }
+.seg > * { grid-area: 1 / 1; text-align: right; }
+.seg .ghost { color: var(--phosphor-dim); text-shadow: none; }
+.lcd-big { font-size: 3rem; }
+.lcd-cap { display: block; font-size: 1.05rem; letter-spacing: .08em; opacity: .85; margin-top: 4px; }
+.cursor { display: inline-block; width: .55em; height: .9em; background: var(--phosphor); vertical-align: -0.08em; margin-left: 2px; animation: blink 1s steps(1) infinite; box-shadow: 0 0 7px var(--phosphor-glow); }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ---------- Čip ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font: 500 var(--t-xs)/1 var(--f-mono);
+  padding: 6px 8px 5px; border-radius: 5px;
+  background: var(--cap); color: var(--ink-2);
+  box-shadow: 0 2px 0 var(--cap-side), inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+/* ---------- Polje ---------- */
+.field { display: grid; gap: 6px; }
+.field label { font: 600 var(--t-xs)/1 var(--f-display); font-stretch: 112%; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+.field input, .field textarea {
+  font: 400 var(--t-md)/1.4 var(--f-body); color: var(--ink);
+  background: var(--well); border: 0; border-radius: 8px; padding: 12px 14px;
+  box-shadow: var(--sink); width: 100%;
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--ink-3); }
+.field input:focus, .field textarea:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- Modul projekta ---------- */
+.module {
+  position: relative; background: var(--case); border-radius: 14px 14px 10px 10px;
+  box-shadow: var(--raise); padding: 14px 14px 16px; display: grid; gap: 14px; align-content: start; min-width: 0;
+}
+.module-grip { height: 9px; margin: 0 28%; border-radius: 3px; background: repeating-linear-gradient(90deg, var(--case-lo) 0 2px, transparent 2px 6px); opacity: .6; }
+.label {
+  background: var(--paper); color: var(--paper-ink); border-radius: 6px; overflow: hidden;
+  box-shadow: 0 1px 0 rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06);
+}
+.label-band { height: 8px; background: var(--tone, var(--accent)); }
+.label-body { padding: 12px 14px 14px; display: grid; gap: 6px; }
+.label-kicker { font: 600 .6875rem/1 var(--f-display); font-stretch: 112%; letter-spacing: .14em; text-transform: uppercase; color: #6B675F; }
+.label-title { font: 800 var(--t-lg)/1.05 var(--f-display); font-stretch: 116%; }
+.module p { font-size: var(--t-sm); color: var(--ink-2); }
+.module-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 10px; }
+
+/* ---------- Monitor (klijentski sajt) ---------- */
+.monitor { background: var(--case); border-radius: 16px; box-shadow: var(--raise); padding: 12px 12px 14px; display: grid; gap: 12px; min-width: 0; }
+.monitor-screen {
+  position: relative; aspect-ratio: 16 / 9; max-width: 100%; overflow: hidden;
+  background: var(--screen); border-radius: 12px / 14px; box-shadow: var(--sink), 0 0 0 3px var(--case-lo);
+  display: grid; place-content: center; text-align: center; gap: 4px; padding: 12px;
+  color: var(--phosphor); font-family: var(--f-screen); text-shadow: 0 0 7px var(--phosphor-glow);
+}
+.monitor-screen::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 1px, transparent 1px 3px), radial-gradient(ellipse at 50% 45%, transparent 50%, rgba(0,0,0,.55));
+}
+.monitor-screen .domain { font-size: 1.7rem; line-height: 1; }
+.monitor-screen .note { font-size: 1rem; opacity: .6; }
+.monitor-chin { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; padding: 0 4px; flex-wrap: wrap; }
+.monitor-chin h4 { font-size: var(--t-md); font-weight: 750; }
+.monitor-chin p { font-size: var(--t-xs); color: var(--ink-2); font-family: var(--f-mono); }
+
+/* ---------- Grids ---------- */
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grid-3 { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .grid-2, .grid-4 { grid-template-columns: 1fr; } }
+
+/* ---------- Hero predloga ---------- */
+.hero { padding-top: 44px; padding-bottom: 40px; gap: 26px; }
+.hero-top { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+.nameplate { display: grid; gap: 10px; }
+.nameplate h1 { font-size: var(--t-4xl); font-weight: 900; font-stretch: 125%; letter-spacing: -.02em; }
+.nameplate h1 small { font-size: .38em; font-weight: 600; letter-spacing: .1em; color: var(--ink-3); vertical-align: .9em; margin-left: .3em; }
+.hero-switches { display: grid; gap: 6px; justify-items: start; }
+.hero-screen { font-size: 1.6rem; line-height: 1.25; min-height: 5.2em; }
+.hero-screen .dim { opacity: .55; }
+.hero-lower { display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 22px; align-items: end; }
+@media (max-width: 760px) { .hero-lower { grid-template-columns: 1fr; } .hero-lower .grille { display: none; } }
+
+/* ---------- Principi ---------- */
+.principle { display: grid; gap: 10px; align-content: start; padding: 18px; border-radius: 12px; background: var(--case-hi); box-shadow: 0 1px 0 var(--line); }
+.principle .tag { justify-self: start; }
+.avoid { display: grid; gap: 8px; padding: 18px; border-radius: 12px; background: var(--well); box-shadow: var(--sink); }
+.avoid ul { margin: 0; padding-left: 1.1em; color: var(--ink-2); font-size: var(--t-sm); display: grid; gap: 4px; }
+
+/* ---------- Boje ---------- */
+.palette { display: grid; gap: 12px; }
+.palette-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 12px; }
+.swatch { display: grid; gap: 8px; }
+.swatch-cap {
+  height: 64px; border-radius: 9px; background: var(--c);
+  box-shadow: 0 5px 0 var(--cs, rgba(0,0,0,.25)), 0 10px 14px -6px var(--shadow), inset 0 1px 0 rgba(255,255,255,.25), inset 0 0 0 1px rgba(0,0,0,.08);
+  margin-bottom: 5px;
+}
+.swatch strong { font: 700 var(--t-sm)/1.1 var(--f-display); font-stretch: 110%; display: block; }
+.swatch span { font: 400 var(--t-xs)/1.3 var(--f-mono); color: var(--ink-2); display: block; }
+
+/* ---------- Tipografija ---------- */
+.spec { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 18px; padding-block: 18px; border-top: 1px solid var(--line); align-items: baseline; }
+.spec:first-of-type { border-top: 0; }
+.spec-meta { display: grid; gap: 4px; }
+.spec-meta strong { font: 700 var(--t-sm)/1.2 var(--f-display); font-stretch: 110%; }
+.spec-meta span { font: 400 var(--t-xs)/1.4 var(--f-mono); color: var(--ink-2); }
+.spec-sample { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 640px) { .spec { grid-template-columns: 1fr; gap: 8px; } }
+.scale { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline; font-family: var(--f-display); font-stretch: 116%; font-weight: 700; color: var(--ink); }
+.scale small { font: 400 var(--t-xs)/1 var(--f-mono); color: var(--ink-3); margin-left: 4px; }
+
+/* ---------- Dubina ---------- */
+.depth-tile { display: grid; gap: 12px; align-content: start; }
+.depth-demo { height: 96px; border-radius: 12px; display: grid; place-items: center; font: 600 var(--t-xs)/1 var(--f-display); font-stretch: 112%; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+.d-well { background: var(--well); box-shadow: var(--sink); }
+.d-flat { background: var(--case); box-shadow: 0 0 0 1px var(--line); }
+.d-panel { background: var(--case); box-shadow: var(--raise); }
+.d-key { background: transparent; }
+.depth-tile p { font-size: var(--t-sm); color: var(--ink-2); }
+
+/* ---------- Komponente ---------- */
+.comp { display: grid; gap: 14px; align-content: start; padding: 18px; border-radius: 12px; background: var(--case-hi); box-shadow: 0 1px 0 var(--line); min-width: 0; }
+.comp-title { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.comp-title code { font: 400 var(--t-xs)/1 var(--f-mono); color: var(--ink-3); }
+.comp .hint { font-size: var(--t-sm); color: var(--ink-2); }
+.lcd-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.pipeline { display: flex; flex-wrap: wrap; gap: 10px 16px; }
+
+/* ---------- Maketa sajta ---------- */
+.frame { background: var(--case-lo); border-radius: 22px; padding: 10px; box-shadow: var(--raise); min-width: 0; }
+.frame-bar { display: flex; align-items: center; gap: 10px; padding: 4px 10px 12px; color: var(--case-hi); font: 500 var(--t-xs)/1 var(--f-mono); }
+.frame-bar .url { flex: 1; min-width: 0; background: rgba(0,0,0,.25); border-radius: 6px; padding: 7px 10px; color: #E9E6DE; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.site { background: var(--bg); border-radius: 14px; padding: clamp(14px, 3vw, 30px); display: grid; gap: 26px; min-width: 0; }
+.site-nav { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+.site-brand { font: 900 var(--t-md)/1 var(--f-display); font-stretch: 125%; letter-spacing: .04em; }
+.site-hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 26px; align-items: center; }
+@media (max-width: 820px) { .site-hero { grid-template-columns: 1fr; } }
+.site-hero h2 { font-size: clamp(2.2rem, 5.4vw, 3.6rem); font-weight: 900; font-stretch: 122%; letter-spacing: -.02em; }
+.site-hero .lcd { font-size: 1.45rem; line-height: 1.2; }
+.site-section-head { display: flex; justify-content: space-between; align-items: end; gap: 14px; flex-wrap: wrap; }
+.site-section-head h3 { font-size: var(--t-xl); font-weight: 800; }
+.featured { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+@media (max-width: 820px) { .featured { grid-template-columns: 1fr; } }
+.featured-copy { display: grid; gap: 14px; align-content: start; }
+.featured-copy h3 { font-size: var(--t-2xl); font-weight: 900; }
+.featured-side { display: grid; gap: 16px; align-content: start; min-width: 0; }
+.pipe-box { padding: 14px; border-radius: 10px; background: var(--well); box-shadow: var(--sink); display: grid; gap: 10px; }
+.about-grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 22px; align-items: start; }
+@media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+.facts { display: grid; gap: 10px; font-size: var(--t-sm); }
+.facts div { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.facts dt, .facts dd { margin: 0; }
+.facts dt { font: 600 var(--t-xs)/1.6 var(--f-display); font-stretch: 112%; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+.site-foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font: 400 var(--t-xs)/1.4 var(--f-mono); color: var(--ink-3); padding-top: 14px; border-top: 1px solid var(--line); }
+.sitemap { display: flex; flex-wrap: wrap; gap: 8px; }
+.sitemap span { font: 500 var(--t-xs)/1 var(--f-mono); padding: 8px 10px; border-radius: 6px; background: var(--well); box-shadow: var(--sink); color: var(--ink-2); }
+.annot { font-size: var(--t-sm); color: var(--ink-2); padding-left: 14px; border-left: 3px solid var(--accent); }
+
+/* ---------- Alternative ---------- */
+.alt { display: grid; gap: 14px; align-content: start; padding: 18px; border-radius: 12px; background: var(--case-hi); box-shadow: 0 1px 0 var(--line); }
+.alt.is-pick { box-shadow: 0 0 0 2px var(--accent), 0 1px 0 var(--line); }
+.alt-strip { display: flex; height: 54px; border-radius: 9px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,.1); }
+.alt-strip i { flex: 1; }
+.alt-strip i:first-child { flex: 2.4; }
+.alt ul { margin: 0; padding-left: 1.1em; font-size: var(--t-sm); color: var(--ink-2); display: grid; gap: 4px; }
+.alt .pick { font: 600 var(--t-xs)/1 var(--f-display); font-stretch: 112%; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.steps { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; color: var(--ink-2); }
+.steps strong { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .key, .switch-knob, .led { transition: none; }
+  .cursor { animation: none; }
+  html { scroll-behavior: auto; }
+}
+@media (max-width: 520px) { .kc { width: 62px; height: 58px; } .lcd-big { font-size: 2.4rem; } }
+</style>
+
+<div class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <header class="panel hero" id="top">
+    <i class="screw tl"></i><i class="screw tr"></i><i class="screw bl"></i><i class="screw br"></i>
+    <div class="hero-top">
+      <div class="nameplate">
+        <span class="eyebrow">Predlog dizajn sistema · v0.1 · Novi Sad, novembar 2026</span>
+        <h1>DJK-1<small>PORTFOLIO</small></h1>
+      </div>
+      <div class="hero-switches">
+        <button class="switch" role="switch" aria-checked="false" id="themeSwitch"><span class="switch-track"><span class="switch-knob"></span></span>Grafit (tamno)</button>
+        <button class="switch" role="switch" aria-checked="false" id="soundSwitch"><span class="switch-track"><span class="switch-knob"></span></span>Zvuk tastera</button>
+      </div>
+    </div>
+
+    <div class="lcd hero-screen" aria-live="polite">
+      <div><span class="dim">&gt;</span> pravac: RADNA MAŠINA</div>
+      <div><span class="dim">&gt;</span> kit plastika · kobalt taster · ambar ekran</div>
+      <div id="heroLine"><span class="dim">&gt;</span> pritisni 1–7 na tastaturi<span class="cursor"></span></div>
+    </div>
+
+    <div class="hero-lower">
+      <nav class="keyrow" aria-label="Sekcije predloga">
+        <a class="key kc" href="#pravac" data-key="1"><b>1</b><span>Pravac</span></a>
+        <a class="key kc" href="#boje" data-key="2"><b>2</b><span>Boje</span></a>
+        <a class="key kc" href="#tipografija" data-key="3"><b>3</b><span>Slova</span></a>
+        <a class="key kc" href="#dubina" data-key="4"><b>4</b><span>Dubina</span></a>
+        <a class="key kc key--mod" href="#komponente" data-key="5"><b>5</b><span>Delovi</span></a>
+        <a class="key kc key--accent" href="#sajt" data-key="6"><b>6</b><span>Sajt</span></a>
+        <a class="key kc" href="#alternative" data-key="7"><b>7</b><span>Opcije</span></a>
+      </nav>
+      <div class="grille" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <!-- ============ 1 PRAVAC ============ -->
+  <section class="panel" id="pravac">
+    <div class="panel-head">
+      <span class="eyebrow">1 · Pravac</span>
+      <h2>Radna mašina</h2>
+      <p>Sajt se ponaša kao komad opreme iz osamdesetih: kućište od sive plastike, mehanički tasteri koji stvarno „propadnu" kad ih pritisneš, mali ambar ekran za brojeve. Naziv DJK-1 je model oznaka izvučena iz tvog handle-a <span class="mono">djuk1ca</span>. Zato i „1" umesto „i" ovde ima smisla, kao serijski broj uređaja.</p>
+    </div>
+    <div class="grid-3">
+      <div class="principle">
+        <span class="key key--sm tag" tabindex="-1">Taster</span>
+        <h3>Dubina samo za akciju</h3>
+        <p class="muted">3D dubinu dobija samo ono što se pritiska ili uključuje: dugmad, prekidači, navigacija. Tekst leži ravno i čita se kao dokument. Tako retro ostaje upotrebljiv za HR koji skenira sajt za 30 sekundi.</p>
+      </div>
+      <div class="principle">
+        <span class="key key--sm key--mod tag" tabindex="-1">Ekran</span>
+        <h3>Ekran je za prave brojeve</h3>
+        <p class="muted">Ambar fosforni displej prikazuje samo metrike koje stvarno postoje: 574 testa, 86,9% pokrivenosti, 134 endpointa, 99,5% tačnosti. Ekran tako postaje dokaz, ne ukras.</p>
+      </div>
+      <div class="principle">
+        <span class="key key--sm key--accent tag" tabindex="-1">Kućište</span>
+        <h3>Jedan detalj po panelu</h3>
+        <p class="muted">Vijci, rešetke za ventilaciju, nalepnice sa oznakom. Svaki panel dobija najviše jedan takav detalj. Više od toga i sajt počinje da liči na kostim.</p>
+      </div>
+    </div>
+    <div class="avoid">
+      <span class="eyebrow">Šta izbegavamo</span>
+      <ul>
+        <li>Pixel font za ceo tekst: pixel ide samo na ekrane, ostalo je čitljiv sans.</li>
+        <li>Neon sci-fi i „haker" zeleni kod koji pada niz ekran.</li>
+        <li>Prejak skeumorfizam: drvo, koža, sjajni gradijenti iz 2010.</li>
+        <li>Animacije na skrol za svaku karticu. Postoji jedan trenutak koji se pamti: pritisak tastera.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 2 BOJE ============ -->
+  <section class="panel" id="boje">
+    <div class="panel-head">
+      <span class="eyebrow">2 · Boje</span>
+      <h2>Kit i grafit, kobalt i ambar</h2>
+      <p>Dve teme, iste uloge. Svetla „Kit" podseća na sivo-bež kućišta starih računara, tamna „Grafit" na crne studijske uređaje. Kobaltni plavi taster je jedini jak akcenat: na svakom ekranu postoji samo jedna glavna akcija. Ambar ekran je isti u obe teme, kao pravi displej.</p>
+    </div>
+    <div class="palette">
+      <span class="eyebrow">Kit · svetla tema</span>
+      <div class="palette-row">
+        <div class="swatch"><div class="swatch-cap" style="--c:#D9D7D0;--cs:#B8B4AA"></div><strong>Sto</strong><span>#D9D7D0 · pozadina</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#E7E5DF;--cs:#B8B4AA"></div><strong>Kućište</strong><span>#E7E5DF · paneli</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#F4F3EF;--cs:#C2BEB4"></div><strong>Taster</strong><span>#F4F3EF · sporedna dugmad</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#7B7872;--cs:#5A5752"></div><strong>Modifikator</strong><span>#7B7872 · treća dugmad</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#2D4BD2;--cs:#1B3093"></div><strong>Kobalt</strong><span>#2D4BD2 · glavna akcija</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#1F1E1B;--cs:#000"></div><strong>Mastilo</strong><span>#1F1E1B · tekst</span></div>
+      </div>
+      <span class="eyebrow" style="margin-top:8px">Grafit · tamna tema</span>
+      <div class="palette-row">
+        <div class="swatch"><div class="swatch-cap" style="--c:#17181B;--cs:#000"></div><strong>Sto</strong><span>#17181B · pozadina</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#222428;--cs:#0E0F11"></div><strong>Kućište</strong><span>#222428 · paneli</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#3B3E45;--cs:#1D1F23"></div><strong>Taster</strong><span>#3B3E45 · sporedna dugmad</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#5B5F67;--cs:#32353B"></div><strong>Modifikator</strong><span>#5B5F67 · treća dugmad</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#5470F7;--cs:#2A3FA8"></div><strong>Kobalt</strong><span>#5470F7 · glavna akcija</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#ECEAE5;--cs:#ABA8A1"></div><strong>Mastilo</strong><span>#ECEAE5 · tekst</span></div>
+      </div>
+      <span class="eyebrow" style="margin-top:8px">Zajedničko · ekran i signali</span>
+      <div class="palette-row">
+        <div class="swatch"><div class="swatch-cap" style="--c:#16120A;--cs:#000"></div><strong>Ekran</strong><span>#16120A · LCD podloga</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#FFB547;--cs:#B87A1E"></div><strong>Fosfor</strong><span>#FFB547 · brojevi na ekranu</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#2FBF66;--cs:#1E8546"></div><strong>LED zelena</strong><span>#2FBF66 · live, prošlo</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#F0A020;--cs:#A86E12"></div><strong>LED ambar</strong><span>#F0A020 · u toku</span></div>
+        <div class="swatch"><div class="swatch-cap" style="--c:#FBFAF6;--cs:#D7D3C9"></div><strong>Nalepnica</strong><span>#FBFAF6 · etikete modula</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 3 TIPOGRAFIJA ============ -->
+  <section class="panel" id="tipografija">
+    <div class="panel-head">
+      <span class="eyebrow">3 · Tipografija</span>
+      <h2>Natpisi sa opreme, tekst iz priručnika</h2>
+      <p>Naslovi su prošireni grotesk, kao natpisi utisnuti na kućište. Tekst je mirni tehnički sans, kao uputstvo za uređaj. Pixel font živi samo na ekranima. Sva četiri fonta imaju Đ, Ć, Č, Š i Ž.</p>
+    </div>
+    <div>
+      <div class="spec">
+        <div class="spec-meta"><strong>Archivo Expanded</strong><span>naslovi · 700–900 · širina 112–125%</span></div>
+        <div class="spec-sample" style="font:900 clamp(2rem,5vw,3rem)/1 var(--f-display);font-stretch:125%;letter-spacing:-.02em">ĐURAĐ MANOJLOVIĆ</div>
+      </div>
+      <div class="spec">
+        <div class="spec-meta"><strong>IBM Plex Sans</strong><span>tekst · 400 / 500 / 600 · 16–18px</span></div>
+        <p class="spec-sample">Fourth-year IT student who builds, tests and ships production software. Uslužionica is live on Google Play, the App Store and the web, with a containerised ASP.NET Core backend that deploys on every merge.</p>
+      </div>
+      <div class="spec">
+        <div class="spec-meta"><strong>IBM Plex Mono</strong><span>tehnologije, putanje, sitni podaci</span></div>
+        <div class="spec-sample mono">C# · .NET 8 · SignalR · Testcontainers · github.com/djuk1ca</div>
+      </div>
+      <div class="spec">
+        <div class="spec-meta"><strong>VT323</strong><span>samo na LCD ekranu</span></div>
+        <div class="spec-sample"><div class="lcd" style="display:inline-block;font-size:2rem;line-height:1">574 TESTS · 86.9% COV<span class="cursor"></span></div></div>
+      </div>
+      <div class="spec">
+        <div class="spec-meta"><strong>Skala</strong><span>rem, korak ≈ 1.27</span></div>
+        <div class="scale">
+          <span style="font-size:.75rem">Aa<small>12</small></span>
+          <span style="font-size:.875rem">Aa<small>14</small></span>
+          <span style="font-size:1rem">Aa<small>16</small></span>
+          <span style="font-size:1.25rem">Aa<small>20</small></span>
+          <span style="font-size:1.625rem">Aa<small>26</small></span>
+          <span style="font-size:2.125rem">Aa<small>34</small></span>
+          <span style="font-size:3rem">Aa<small>48</small></span>
+          <span style="font-size:4rem">Aa<small>64</small></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4 DUBINA ============ -->
+  <section class="panel" id="dubina">
+    <div class="panel-head">
+      <span class="eyebrow">4 · Dubina</span>
+      <h2>Četiri nivoa, ništa između</h2>
+      <p>Svaki element sedi na tačno jednom nivou. Svetlo uvek pada odozgo: gornja ivica je svetlija, donja tamnija, senka ide nadole. Kad se ovo poštuje, cela stranica deluje kao jedan fizički predmet.</p>
+    </div>
+    <div class="grid-4">
+      <div class="depth-tile">
+        <div class="depth-demo d-well">Udubljeno</div>
+        <h3>−1 · Ležište</h3>
+        <p>Polja za unos, LCD ekrani, staza prekidača. Unutrašnja senka odozgo.</p>
+      </div>
+      <div class="depth-tile">
+        <div class="depth-demo d-flat">Ravno</div>
+        <h3>0 · Površina</h3>
+        <p>Tekst, liste, tabele. Bez senke, samo tanka linija gde treba.</p>
+      </div>
+      <div class="depth-tile">
+        <div class="depth-demo d-panel">Panel</div>
+        <h3>+1 · Kućište</h3>
+        <p>Sekcije, moduli projekata, monitori. Svetla gornja ivica, meka senka 22px.</p>
+      </div>
+      <div class="depth-tile">
+        <div class="depth-demo d-key"><button class="key key--accent" type="button">Pritisni</button></div>
+        <h3>+2 · Taster</h3>
+        <p>6px bočne strane. Na pritisak taster propada 5px za 70ms, senka se skuplja.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5 KOMPONENTE ============ -->
+  <section class="panel" id="komponente">
+    <div class="panel-head">
+      <span class="eyebrow">5 · Komponente</span>
+      <h2>Delovi mašine</h2>
+      <p>Sve ovde je živo: pritiskaj, uključuj, kucaj. Uključi „Zvuk tastera" gore i dugmad će kliknuti kao mehanički prekidač, ali samo ako posetilac to sam izabere.</p>
+    </div>
+    <div class="grid-2">
+      <div class="comp">
+        <div class="comp-title"><h3>Tasteri</h3><code>.key</code></div>
+        <div class="keyrow">
+          <button class="key key--accent" type="button">View work</button>
+          <button class="key" type="button">Download CV</button>
+          <button class="key key--mod" type="button">GitHub <span class="arrow">↗</span></button>
+        </div>
+        <div class="keyrow">
+          <button class="key key--sm key--accent" type="button">Live <span class="arrow">↗</span></button>
+          <button class="key key--sm" type="button">Code</button>
+          <button class="key key--sm key--mod" type="button">Esc</button>
+        </div>
+        <p class="hint">Kobalt = jedna glavna akcija po ekranu. Kit = sporedne. Modifikator = spoljni linkovi i pomoćne radnje.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-title"><h3>LCD displej</h3><code>.lcd .seg</code></div>
+        <div class="lcd-row">
+          <div class="lcd"><span class="seg lcd-big"><span class="ghost">888</span><span>574</span></span><span class="lcd-cap">TESTS</span></div>
+          <div class="lcd"><span class="seg lcd-big"><span class="ghost">88.8</span><span>86.9</span></span><span class="lcd-cap">% COVERAGE</span></div>
+        </div>
+        <p class="hint">Ugašeni segmenti „888" svetle slabo iza broja, kao na pravom displeju. Samo stvarne metrike.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-title"><h3>LED statusi</h3><code>.led</code></div>
+        <div class="pipe-box">
+          <div class="pipeline" id="pipeline">
+            <span class="status"><i class="led on"></i>build</span>
+            <span class="status"><i class="led on"></i>analyzers</span>
+            <span class="status"><i class="led on"></i>tests</span>
+            <span class="status"><i class="led on"></i>coverage ≥75%</span>
+            <span class="status"><i class="led on"></i>CodeQL</span>
+            <span class="status"><i class="led on"></i>docker</span>
+            <span class="status"><i class="led on"></i>deploy</span>
+            <span class="status"><i class="led on"></i>smoke test</span>
+          </div>
+        </div>
+        <div class="keyrow"><button class="key key--sm key--mod" type="button" id="runPipe">▶ Pokreni pipeline</button></div>
+        <p class="hint">Tvoj stvarni CI iz Uslužionice, prikazan kao red lampica. Ambar = u toku, zeleno = prošlo.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-title"><h3>Prekidači i čipovi</h3><code>.switch .chip</code></div>
+        <div class="keyrow" style="gap:18px">
+          <button class="switch" role="switch" aria-checked="true" id="demoSwitch"><span class="switch-track"><span class="switch-knob"></span></span>Open to internships</button>
+        </div>
+        <div class="chips">
+          <span class="chip">C#</span><span class="chip">.NET 8</span><span class="chip">ASP.NET Core</span><span class="chip">Blazor</span><span class="chip">.NET MAUI</span><span class="chip">React</span><span class="chip">Spring Boot</span><span class="chip">Docker</span>
+        </div>
+        <p class="hint">Čipovi su niski tasteri od 2px: deluju fizički, ali se ne pritiskaju, pa ne glume dugme.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-title"><h3>Polje za unos</h3><code>.field</code></div>
+        <form id="demoForm" class="comp" style="padding:0;background:none;box-shadow:none">
+          <div class="field"><label for="f-email">Your email</label><input id="f-email" type="email" placeholder="name@company.com"></div>
+          <div class="field"><label for="f-msg">Message</label><textarea id="f-msg" rows="3" placeholder="We have an internship opening…"></textarea></div>
+          <div class="keyrow" style="justify-content:space-between">
+            <span class="status" id="formStatus"><i class="led"></i>spremno</span>
+            <button class="key key--accent" type="submit">Send</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="comp">
+        <div class="comp-title"><h3>Modul projekta</h3><code>.module</code></div>
+        <article class="module">
+          <div class="module-grip" aria-hidden="true"></div>
+          <div class="label" style="--tone:#D9433B">
+            <div class="label-band"></div>
+            <div class="label-body">
+              <span class="label-kicker">Game AI · May 2026</span>
+              <span class="label-title">Connect 4 AI</span>
+            </div>
+          </div>
+          <p>Minimax with alpha-beta pruning, three search engines and measured pruning benchmarks.</p>
+          <div class="chips"><span class="chip">Java</span><span class="chip">JavaFX</span></div>
+          <div class="module-foot">
+            <span class="status"><i class="led on"></i>playable</span>
+            <a class="key key--sm" href="https://github.com/djuk1ca/connect4-minimax-ai" target="_blank" rel="noopener">Code <span class="arrow">↗</span></a>
+          </div>
+        </article>
+        <p class="hint">Svaki projekat je „kertridž" sa nalepnicom. Traka u boji razlikuje projekte; nalepnica ostaje svetla i u tamnoj temi, kao pravi papir.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6 SAJT ============ -->
+  <section class="panel" id="sajt">
+    <div class="panel-head">
+      <span class="eyebrow">6 · Kako bi izgledao sajt</span>
+      <h2>Početna strana, od vrha do dna</h2>
+      <p>Predlažem sadržaj na engleskom (CV i prijave za praksu su na engleskom), sa srpskom verzijom kao drugim jezikom. Redosled prati ono što poslodavac traži: ko si, najjači dokaz, rad za klijente, sopstveni projekti, kontakt.</p>
+    </div>
+    <div class="sitemap" aria-label="Mapa sajta">
+      <span>/</span><span>/work/usluzionica</span><span>/work/broker-auditor</span><span>/work/md-mont</span><span>/work/kaneko</span><span>/work/simplice</span><span>/projects/language-id</span><span>/projects/connect-4</span><span>/projects/pdf-fast-reading</span><span>/projects/flappy</span><span>/cv</span>
+    </div>
+
+    <div class="frame">
+      <div class="frame-bar"><i class="led on"></i><span class="url">https://tvoj-domen.dev/</span></div>
+      <div class="site">
+
+        <div class="site-nav">
+          <span class="site-brand">ĐM · DJK-1</span>
+          <div class="keyrow">
+            <a class="key key--sm" href="#m-work">Work</a>
+            <a class="key key--sm" href="#m-projects">Projects</a>
+            <a class="key key--sm" href="#m-about">About</a>
+            <a class="key key--sm key--accent" href="#m-contact">Contact</a>
+          </div>
+        </div>
+
+        <!-- hero -->
+        <div class="site-hero">
+          <div style="display:grid;gap:18px">
+            <span class="eyebrow">Software engineer · Novi Sad, Serbia</span>
+            <h2>Đurađ Manojlović</h2>
+            <p class="muted">Fourth-year IT student at the University of Novi Sad. I run Uslužionica, a services marketplace live on Android, iOS and the web.</p>
+            <div class="keyrow">
+              <a class="key key--accent" href="#m-work">View work</a>
+              <button class="key" type="button">Download CV</button>
+              <a class="key key--mod" href="https://github.com/djuk1ca" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
+            </div>
+          </div>
+          <div style="display:grid;gap:12px">
+            <div class="lcd">&gt; builds, tests<br>&gt; &amp; ships production<br>&gt; software<span class="cursor"></span></div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap">
+              <span class="status"><i class="led on"></i>Uslužionica · live</span>
+              <span class="status"><i class="led on"></i>Open to internships</span>
+            </div>
+          </div>
+        </div>
+        <p class="annot">Hero: ime kao natpis na kućištu, ekran sa jednom rečenicom koja se „kuca", i tri tastera. Glavna akcija je samo jedna (kobalt).</p>
+
+        <!-- featured -->
+        <div class="panel" id="m-work">
+          <i class="screw tl"></i><i class="screw tr"></i>
+          <div class="featured">
+            <div class="featured-copy">
+              <span class="eyebrow">Featured · Founder &amp; developer · Apr 2026 – present</span>
+              <h3>Uslužionica</h3>
+              <p class="muted">A local services marketplace. ASP.NET Core 8 backend with JWT auth and SignalR, .NET MAUI apps on Google Play and the App Store, and a Blazor web app. Serbian search that tolerates missing diacritics, Cyrillic and typos.</p>
+              <div class="chips"><span class="chip">C#</span><span class="chip">ASP.NET Core 8</span><span class="chip">.NET MAUI</span><span class="chip">Blazor</span><span class="chip">SQL Server</span><span class="chip">Redis</span><span class="chip">Docker</span></div>
+              <div class="keyrow">
+                <a class="key key--accent" href="https://usluzionica.rs" target="_blank" rel="noopener">usluzionica.rs <span class="arrow">↗</span></a>
+                <button class="key" type="button">Case study</button>
+                <a class="key key--mod" href="https://github.com/djuk1ca/UsluzionicaServer" target="_blank" rel="noopener">Code <span class="arrow">↗</span></a>
+              </div>
+            </div>
+            <div class="featured-side">
+              <div class="lcd-row">
+                <div class="lcd"><span class="seg lcd-big"><span class="ghost">888</span><span>134</span></span><span class="lcd-cap">REST ENDPOINTS</span></div>
+                <div class="lcd"><span class="seg lcd-big"><span class="ghost">888</span><span>574</span></span><span class="lcd-cap">AUTOMATED TESTS</span></div>
+                <div class="lcd"><span class="seg lcd-big"><span class="ghost">88.8</span><span>86.9</span></span><span class="lcd-cap">% LINE COVERAGE</span></div>
+                <div class="lcd"><span class="seg lcd-big"><span class="ghost">8</span><span>3</span></span><span class="lcd-cap">PLATFORMS</span></div>
+              </div>
+              <div class="pipe-box">
+                <span class="eyebrow">Every merge to main</span>
+                <div class="pipeline">
+                  <span class="status"><i class="led on"></i>build</span><span class="status"><i class="led on"></i>tests</span><span class="status"><i class="led on"></i>coverage</span><span class="status"><i class="led on"></i>CodeQL</span><span class="status"><i class="led on"></i>deploy</span><span class="status"><i class="led on"></i>smoke</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="annot">Uslužionica dobija sopstveni panel sa vijcima jer je najjači dokaz. Brojevi su na ekranima, CI je red lampica. Klik na „Case study" vodi na posebnu stranu sa arhitekturom, pretragom i token ekonomijom.</p>
+
+        <!-- client work -->
+        <div style="display:grid;gap:16px">
+          <div class="site-section-head"><h3>Client work</h3><span class="eyebrow">4 live sites</span></div>
+          <div class="grid-2">
+            <article class="monitor">
+              <div class="monitor-screen"><span class="domain">brokerauditor.com</span><span class="note">[ screenshot ]</span></div>
+              <div class="monitor-chin"><div><h4>Broker Auditor</h4><p>US freight reviews · React, Tailwind</p></div><a class="key key--sm" href="https://brokerauditor.com" target="_blank" rel="noopener">Visit <span class="arrow">↗</span></a></div>
+            </article>
+            <article class="monitor">
+              <div class="monitor-screen"><span class="domain">mdmont.rs</span><span class="note">[ screenshot ]</span></div>
+              <div class="monitor-chin"><div><h4>M&amp;D Mont</h4><p>Steel structures &amp; roof panels · React</p></div><a class="key key--sm" href="https://mdmont.rs" target="_blank" rel="noopener">Visit <span class="arrow">↗</span></a></div>
+            </article>
+            <article class="monitor">
+              <div class="monitor-screen"><span class="domain">kaneko-eeu.com</span><span class="note">[ screenshot ]</span></div>
+              <div class="monitor-chin"><div><h4>Kaneko Seeds Eastern Europe</h4><p>B2B seed catalogue · distributor finder</p></div><a class="key key--sm" href="https://kaneko-eeu.com" target="_blank" rel="noopener">Visit <span class="arrow">↗</span></a></div>
+            </article>
+            <article class="monitor">
+              <div class="monitor-screen"><span class="domain">simplicebeautylounge.com</span><span class="note">[ screenshot ]</span></div>
+              <div class="monitor-chin"><div><h4>Simplice Beauty Lounge</h4><p>Beauty salon, UAE · site + 3 yrs content</p></div><a class="key key--sm" href="https://simplicebeautylounge.com" target="_blank" rel="noopener">Visit <span class="arrow">↗</span></a></div>
+            </article>
+          </div>
+        </div>
+        <p class="annot">Klijentski sajtovi su „monitori". Na ekran ide pravi snimak ekrana sa blagim CRT filterom (linije, zaobljeni uglovi), a na hover može da se pomera kao da skroluješ sajt.</p>
+
+        <!-- projects -->
+        <div style="display:grid;gap:16px" id="m-projects">
+          <div class="site-section-head"><h3>Projects</h3><span class="eyebrow">Coursework &amp; side projects</span></div>
+          <div class="grid-4">
+            <article class="module">
+              <div class="module-grip" aria-hidden="true"></div>
+              <div class="label" style="--tone:#1E8F80"><div class="label-band"></div><div class="label-body"><span class="label-kicker">ML · Sep 2026</span><span class="label-title">Language ID</span></div></div>
+              <p>Five-language classifier trained on film subtitles. 99.5% accuracy on held-out films.</p>
+              <div class="chips"><span class="chip">Java</span><span class="chip">Weka</span><span class="chip">PDFBox</span></div>
+              <div class="module-foot"><span class="status"><i class="led on"></i>desktop app</span><button class="key key--sm" type="button">Details</button></div>
+            </article>
+            <article class="module">
+              <div class="module-grip" aria-hidden="true"></div>
+              <div class="label" style="--tone:#D9433B"><div class="label-band"></div><div class="label-body"><span class="label-kicker">Game AI · May 2026</span><span class="label-title">Connect 4 AI</span></div></div>
+              <p>Minimax with alpha-beta pruning and a depth-limited heuristic evaluator.</p>
+              <div class="chips"><span class="chip">Java</span><span class="chip">JavaFX</span></div>
+              <div class="module-foot"><span class="status"><i class="led on"></i>playable</span><a class="key key--sm" href="https://github.com/djuk1ca/connect4-minimax-ai" target="_blank" rel="noopener">Code <span class="arrow">↗</span></a></div>
+            </article>
+            <article class="module">
+              <div class="module-grip" aria-hidden="true"></div>
+              <div class="label" style="--tone:#6A4FCF"><div class="label-band"></div><div class="label-body"><span class="label-kicker">Full-stack · Feb 2026</span><span class="label-title">PDF Fast Reading</span></div></div>
+              <p>Upload a document and speed-read it. Resume anywhere, on the web or Android.</p>
+              <div class="chips"><span class="chip">Spring Boot</span><span class="chip">PostgreSQL</span><span class="chip">React</span></div>
+              <div class="module-foot"><span class="status"><i class="led on"></i>live demo</span><a class="key key--sm" href="https://pdf-fast-reading.vercel.app" target="_blank" rel="noopener">Demo <span class="arrow">↗</span></a></div>
+            </article>
+            <article class="module">
+              <div class="module-grip" aria-hidden="true"></div>
+              <div class="label" style="--tone:#3E9E48"><div class="label-band"></div><div class="label-body"><span class="label-kicker">Browser game · 2023</span><span class="label-title">Flappy, hard mode</span></div></div>
+              <p>The gap shrinks at 15 points and the pipes start moving at 30.</p>
+              <div class="chips"><span class="chip">JavaScript</span><span class="chip">Canvas</span></div>
+              <div class="module-foot"><span class="status"><i class="led on"></i>playable</span><a class="key key--sm" href="https://github.com/djuk1ca/flappy-bird" target="_blank" rel="noopener">Code <span class="arrow">↗</span></a></div>
+            </article>
+          </div>
+        </div>
+        <p class="annot">Ideja za kasnije: Connect 4 i Flappy igrivi direktno na sajtu, unutar monitora. To je najbrži način da posetilac zapamti sajt.</p>
+
+        <!-- about -->
+        <div class="about-grid" id="m-about">
+          <div style="display:grid;gap:10px">
+            <div class="lcd"><span class="seg lcd-big"><span class="ghost">8.88</span><span>9.36</span></span><span class="lcd-cap">GPA · 185 ECTS</span></div>
+          </div>
+          <dl class="facts">
+            <div><dt>Education</dt><dd>Faculty of Sciences, University of Novi Sad · Information Technology, 2023–2027</dd></div>
+            <div><dt>Training</dt><dd>CyberSecPro Cybersecurity Winter School · Portugal, Jan 2026</dd></div>
+            <div><dt>Contract</dt><dd>Broker Auditor · 7 months in a distributed remote team</dd></div>
+            <div><dt>Languages</dt><dd>Serbian (native) · English (professional)</dd></div>
+          </dl>
+        </div>
+
+        <!-- contact -->
+        <div class="panel" id="m-contact" style="gap:16px">
+          <h3 style="font-size:var(--t-xl)">Let's talk</h3>
+          <p class="muted">Looking for an internship in backend or full-stack .NET. Happy to walk you through the Uslužionica codebase.</p>
+          <div class="keyrow">
+            <button class="key key--accent" type="button">Email me</button>
+            <a class="key" href="https://linkedin.com/in/djuradj-manojlovic" target="_blank" rel="noopener">LinkedIn <span class="arrow">↗</span></a>
+            <a class="key key--mod" href="https://github.com/djuk1ca" target="_blank" rel="noopener">GitHub <span class="arrow">↗</span></a>
+          </div>
+        </div>
+
+        <div class="site-foot"><span>DJK-1 · built by Đurađ Manojlović · Novi Sad</span><span>Astro · Cloudflare</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 7 ALTERNATIVE ============ -->
+  <section class="panel" id="alternative">
+    <div class="panel-head">
+      <span class="eyebrow">7 · Opcije za razgovor</span>
+      <h2>Tri smera retro izgleda</h2>
+      <p>Ova strana je urađena u smeru A. Ako ti je B ili C bliže, ili želiš mešavinu (npr. A sa tamnom temom kao glavnom), sistem se lako prebacuje jer je sve vezano za tokene.</p>
+    </div>
+    <div class="grid-3">
+      <div class="alt is-pick">
+        <span class="pick">Preporuka · ova strana</span>
+        <div class="alt-strip"><i style="background:#E7E5DF"></i><i style="background:#F4F3EF"></i><i style="background:#7B7872"></i><i style="background:#2D4BD2"></i><i style="background:#FFB547"></i></div>
+        <h3>A · Kit i kobalt</h3>
+        <ul>
+          <li>Svetla siva plastika, plavi taster, ambar ekran.</li>
+          <li>Plus: čitljivo, ozbiljno za HR, retro bez kiča.</li>
+          <li>Minus: manje „wow" na prvi pogled od tamnih varijanti.</li>
+        </ul>
+      </div>
+      <div class="alt">
+        <span class="eyebrow">Alternativa</span>
+        <div class="alt-strip"><i style="background:#0F1410"></i><i style="background:#1C241D"></i><i style="background:#33FF88"></i><i style="background:#FFB547"></i><i style="background:#3A4A3C"></i></div>
+        <h3>B · Fosforni terminal</h3>
+        <ul>
+          <li>Ceo sajt je u CRT monitoru: tamno, zeleni i ambar fosfor, pixel naslovi.</li>
+          <li>Plus: jak prvi utisak, mogu komande tipa <span class="mono">open usluzionica</span>.</li>
+          <li>Minus: duži tekst se teže čita, lako sklizne u kliše „haker" sajta.</li>
+        </ul>
+      </div>
+      <div class="alt">
+        <span class="eyebrow">Alternativa</span>
+        <div class="alt-strip"><i style="background:#C9CCCF"></i><i style="background:#E4E6E8"></i><i style="background:#2B2D30"></i><i style="background:#F26A1B"></i><i style="background:#F2E6C9"></i></div>
+        <h3>C · Hi-fi aluminijum</h3>
+        <ul>
+          <li>Brušeni metal, okrugli potenciometri, VU-metri, narandžasti indikatori.</li>
+          <li>Plus: premium, zanatski utisak.</li>
+          <li>Minus: teže za izradu (teksture metala), manje veze sa tasterima koje želiš.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel-head" style="margin-top:6px">
+      <h3>Šta treba da odlučimo pre detaljisanja</h3>
+      <ol class="steps">
+        <li><strong>Smer:</strong> A, B, C ili mešavina, i koja tema je glavna (svetla ili tamna).</li>
+        <li><strong>Jezik:</strong> engleski kao glavni, srpski kao druga verzija, ili obrnuto.</li>
+        <li><strong>Snimci ekrana</strong> za četiri klijentska sajta, i da li klijenti smeju da budu navedeni.</li>
+        <li><strong>Domen:</strong> po njemu se menja natpis na kućištu i u footeru.</li>
+        <li>Zatim: formalni dizajn sistem (tokeni i komponente, kao za Kaneko i Simplice), pa izrada i deploy na Cloudflare.</li>
+      </ol>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Zvuk tastera (WebAudio, samo na zahtev) ---- */
+  var soundOn = false, ctx = null;
+  function clack() {
+    if (!soundOn) return;
+    try {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      var t = ctx.currentTime, len = Math.floor(ctx.sampleRate * 0.035);
+      var buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 5);
+      var src = ctx.createBufferSource(); src.buffer = buf;
+      var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 2600; bp.Q.value = 0.8;
+      var g = ctx.createGain(); g.gain.value = 0.55;
+      src.connect(bp); bp.connect(g); g.connect(ctx.destination); src.start(t);
+      var o = ctx.createOscillator(), og = ctx.createGain();
+      o.frequency.setValueAtTime(190, t); o.frequency.exponentialRampToValueAtTime(90, t + 0.05);
+      og.gain.setValueAtTime(0.18, t); og.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+      o.connect(og); og.connect(ctx.destination); o.start(t); o.stop(t + 0.07);
+    } catch (e) {}
+  }
+  document.addEventListener('pointerdown', function (e) {
+    if (e.target.closest('.key, .switch')) clack();
+  });
+
+  /* ---- Prekidači ---- */
+  function bindSwitch(el, fn) {
+    el.addEventListener('click', function () {
+      var on = el.getAttribute('aria-checked') !== 'true';
+      el.setAttribute('aria-checked', String(on));
+      if (fn) fn(on);
+    });
+  }
+  var themeSwitch = document.getElementById('themeSwitch');
+  var isDark = root.getAttribute('data-theme')
+    ? root.getAttribute('data-theme') === 'dark'
+    : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  themeSwitch.setAttribute('aria-checked', String(isDark));
+  bindSwitch(themeSwitch, function (on) { root.setAttribute('data-theme', on ? 'dark' : 'light'); });
+  bindSwitch(document.getElementById('soundSwitch'), function (on) { soundOn = on; if (on) clack(); });
+  bindSwitch(document.getElementById('demoSwitch'));
+
+  /* ---- Tastatura 1–7 ---- */
+  var heroLine = document.getElementById('heroLine');
+  var names = { '1': 'PRAVAC', '2': 'BOJE', '3': 'TIPOGRAFIJA', '4': 'DUBINA', '5': 'KOMPONENTE', '6': 'SAJT', '7': 'OPCIJE' };
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    var k = document.querySelector('.kc[data-key="' + e.key + '"]');
+    if (!k) return;
+    e.preventDefault();
+    if (!e.repeat) { k.classList.add('is-down'); soundOn && clack(); }
+    heroLine.innerHTML = '<span class="dim">&gt;</span> otvaram: ' + names[e.key] + '<span class="cursor"></span>';
+    var target = document.querySelector(k.getAttribute('href'));
+    if (target && !e.repeat) target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+  });
+  document.addEventListener('keyup', function (e) {
+    var k = document.querySelector('.kc[data-key="' + e.key + '"]');
+    if (k) k.classList.remove('is-down');
+  });
+
+  /* ---- Pipeline LED ---- */
+  var runBtn = document.getElementById('runPipe');
+  var running = false;
+  runBtn.addEventListener('click', function () {
+    if (running) return;
+    running = true;
+    var leds = Array.prototype.slice.call(document.querySelectorAll('#pipeline .led'));
+    leds.forEach(function (l) { l.className = 'led'; });
+    var step = reduced ? 0 : 260;
+    leds.forEach(function (l, i) {
+      setTimeout(function () { l.className = 'led warn'; }, i * step);
+      setTimeout(function () { l.className = 'led on'; if (i === leds.length - 1) running = false; }, i * step + (reduced ? 0 : 220));
+    });
+  });
+
+  /* ---- Forma (samo prikaz) ---- */
+  document.getElementById('demoForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    document.getElementById('formStatus').innerHTML = '<i class="led warn"></i>demo: ništa nije poslato';
+  });
+})();
+</script>

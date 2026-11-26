@@ -1,0 +1,40 @@
+<!-- @dsCard group="Status" height=180 subtitle="Pritisni Run pipeline" -->
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Led</title><style>html,body{margin:0}body{padding:20px}</style></head>
+<body class="djk-root">
+<div style="display:grid;gap:14px">
+  <div class="djk-row" style="gap:18px">
+    <span class="djk-status"><i class="djk-led is-on"></i>available for new projects</span>
+    <span class="djk-status"><i class="djk-led is-warn"></i>deploying</span>
+    <span class="djk-status"><i class="djk-led"></i>offline</span>
+  </div>
+  <div class="djk-statusbox">
+    <span class="djk-eyebrow">Every merge to main</span>
+    <div class="djk-pipeline" id="p">
+      <span class="djk-status"><i class="djk-led is-on"></i>build</span>
+      <span class="djk-status"><i class="djk-led is-on"></i>analyzers</span>
+      <span class="djk-status"><i class="djk-led is-on"></i>tests</span>
+      <span class="djk-status"><i class="djk-led is-on"></i>coverage ≥75%</span>
+      <span class="djk-status"><i class="djk-led is-on"></i>CodeQL</span>
+      <span class="djk-status"><i class="djk-led is-on"></i>docker</span>
+      <span class="djk-status"><i class="djk-led is-on"></i>deploy</span>
+      <span class="djk-status"><i class="djk-led is-on"></i>smoke test</span>
+    </div>
+  </div>
+  <div><button class="djk-key djk-key--sm djk-key--mod" type="button" id="run">▶ Run pipeline</button></div>
+</div>
+<script>
+(function () {
+  var busy = false, rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('run').addEventListener('click', function () {
+    if (busy) return; busy = true;
+    var leds = [].slice.call(document.querySelectorAll('#p .djk-led')), step = rm ? 0 : 260;
+    leds.forEach(function (l) { l.className = 'djk-led'; });
+    leds.forEach(function (l, i) {
+      setTimeout(function () { l.className = 'djk-led is-warn'; }, i * step);
+      setTimeout(function () { l.className = 'djk-led is-on'; if (i === leds.length - 1) busy = false; }, i * step + (rm ? 0 : 220));
+    });
+  });
+})();
+</script>
+</body></html>
