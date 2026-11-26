@@ -45,6 +45,14 @@ describe('buildTokensCss', () => {
     );
   });
 
+  it('writes a class per type style', () => {
+    expect(css).toContain(
+      '.display-xl { font-family: var(--font-display); font-size: 64px; line-height: 0.95; font-weight: 900; letter-spacing: -0.02em; }',
+    );
+    expect(css).toContain('.body { font-family: var(--font-body); font-size: 16px; line-height: 26px; font-weight: 400; }');
+    expect(css).toContain('.lcd-xl { font-family: var(--font-screen);');
+  });
+
   it('starts with the generated marker', () => {
     expect(css.startsWith('/* DJK-1 — generated from tokens.json */')).toBe(true);
   });

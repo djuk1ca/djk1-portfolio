@@ -43,6 +43,21 @@ export function buildTokensCss(tokens) {
     (tokens[family]?.tokens ?? []).map((t) => `--${t.name}: ${t.value};`),
   );
   out.push('', ':root {', body(scalar), '}', '');
+
+  // One class per type style, e.g. .display-xl, .body, .lcd-xl (family from the group unless the style has its own).
+  for (const group of tokens.type?.groups ?? []) {
+    for (const s of group.styles) {
+      const decls = [
+        `font-family: var(--font-${s.family ?? group.family});`,
+        `font-size: ${s.fontSize};`,
+        s.lineHeight !== undefined && `line-height: ${s.lineHeight};`,
+        s.fontWeight !== undefined && `font-weight: ${s.fontWeight};`,
+        s.letterSpacing !== undefined && `letter-spacing: ${s.letterSpacing};`,
+      ].filter(Boolean);
+      out.push(`.${s.name} { ${decls.join(' ')} }`);
+    }
+  }
+  out.push('');
   return out.join('\n');
 }
 
