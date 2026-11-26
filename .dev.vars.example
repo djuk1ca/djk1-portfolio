@@ -1,0 +1,5 @@
+# Copy to .dev.vars for local preview and tests. Turnstile test keys always pass.
+NEXTJS_ENV=development
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+IP_SALT=dev-salt
+# RESEND_API_KEY=re_...   (leave unset locally: inquiries are stored in D1 and not emailed)

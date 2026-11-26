@@ -19,6 +19,8 @@ export type InquiryRecord = {
   message: string;
   ipHash: string;
   createdAt: string;
+  /** False when sent without a Turnstile token (no JavaScript): stored, not emailed. */
+  verified: boolean;
 };
 
 export type InquiryDeps = {
@@ -61,14 +63,17 @@ export async function handleInquiry(
     return { status: 'error', fieldErrors };
   }
 
-  if (!(await deps.verifyCaptcha(captcha, ip))) return { status: 'error', formError: 'captcha' };
+  // Without JavaScript the Turnstile widget cannot run, so there is no token. Such inquiries are kept
+  // (never lost) but stored as unverified and not emailed, so token-less bots cannot fill the inbox.
+  const verified = captcha.trim() !== '';
+  if (verified && !(await deps.verifyCaptcha(captcha, ip))) return { status: 'error', formError: 'captcha' };
 
   const now = deps.now();
   const ipHash = await deps.hashIp(ip);
   const since = new Date(now.getTime() - RATE_LIMIT.windowMs).toISOString();
   if ((await deps.countSince(ipHash, since)) >= RATE_LIMIT.max) return { status: 'error', formError: 'rateLimited' };
 
-  const record: InquiryRecord = { ...parsed.data, ipHash, createdAt: now.toISOString() };
+  const record: InquiryRecord = { ...parsed.data, ipHash, createdAt: now.toISOString(), verified };
   let id: number;
   try {
     id = await deps.save(record);
@@ -77,6 +82,7 @@ export async function handleInquiry(
     return { status: 'error', formError: 'server' };
   }
 
+  if (!verified) return { status: 'sent' };
   try {
     await deps.notify({ ...record, id });
     await deps.markEmailed(id);

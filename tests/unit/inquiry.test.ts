@@ -128,6 +128,20 @@ describe('handleInquiry', () => {
     expect(deps.verifyCaptcha).not.toHaveBeenCalled();
   });
 
+  it('stores a token-less (no-JavaScript) inquiry as unverified and does not email it', async () => {
+    const { deps, saved } = fakeDeps();
+    expect(await handleInquiry(form({ 'cf-turnstile-response': '' }), 'ip', deps, en)).toEqual({ status: 'sent' });
+    expect(deps.verifyCaptcha).not.toHaveBeenCalled();
+    expect(saved[0].verified).toBe(false);
+    expect(deps.notify).not.toHaveBeenCalled();
+  });
+
+  it('marks a captcha-checked inquiry as verified', async () => {
+    const { deps, saved } = fakeDeps();
+    await handleInquiry(form(), 'ip', deps, en);
+    expect(saved[0].verified).toBe(true);
+  });
+
   it('stops on a failed captcha', async () => {
     const { deps } = fakeDeps({ verifyCaptcha: vi.fn(async () => false) });
     expect(await handleInquiry(form(), 'ip', deps, en)).toEqual({ status: 'error', formError: 'captcha' });

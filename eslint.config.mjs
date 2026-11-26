@@ -15,6 +15,7 @@ const config = [
       'test-results/**',
       'design/**',
       'next-env.d.ts',
+      'cloudflare-env.d.ts',
     ],
   },
 ];

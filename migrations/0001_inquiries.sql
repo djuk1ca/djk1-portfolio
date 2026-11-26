@@ -9,6 +9,8 @@ CREATE TABLE inquiries (
   timeline TEXT,
   message TEXT NOT NULL,
   ip_hash TEXT NOT NULL,
+  -- 0 = sent without a Turnstile token (no JavaScript): kept, not emailed; review with wrangler d1 execute.
+  verified INTEGER NOT NULL DEFAULT 1,
   emailed INTEGER NOT NULL DEFAULT 0
 );
 

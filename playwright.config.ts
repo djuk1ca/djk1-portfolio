@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const port = Number(process.env.E2E_PORT ?? 3000);
+const port = Number(process.env.E2E_PORT ?? 8787);
 const baseURL = process.env.E2E_BASE_URL ?? `http://localhost:${port}`;
 
 export default defineConfig({
@@ -17,9 +17,10 @@ export default defineConfig({
   webServer: process.env.E2E_BASE_URL
     ? undefined
     : {
-        command: 'npm run build && npm run start',
+        // The real Worker (OpenNext build + wrangler) with local D1 and .dev.vars.
+        command: 'npm run db:migrate:local && npm run preview',
         url: baseURL,
         reuseExistingServer: !process.env.CI,
-        timeout: 240_000,
+        timeout: 600_000,
       },
 });

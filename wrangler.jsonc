@@ -1,0 +1,29 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "djk1-portfolio",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "djk1-inquiries",
+      // Replace with the id printed by `npx wrangler d1 create djk1-inquiries` before the first deploy.
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    // Change to the custom domain once it exists; canonical URLs, sitemap and OG images use it.
+    "SITE_URL": "https://djk1-portfolio.workers.dev",
+    // Turnstile always-pass test key until a real widget exists (Cloudflare dashboard → Turnstile).
+    "TURNSTILE_SITE_KEY": "1x00000000000000000000AA",
+    "NOTIFY_EMAIL": "djuradj.manojlovic04@gmail.com"
+  }
+  // Secrets (wrangler secret put …): TURNSTILE_SECRET, RESEND_API_KEY, IP_SALT
+}

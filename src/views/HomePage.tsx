@@ -1,15 +1,17 @@
 import { Cursor, Key, Lcd, LcdGrid, LcdNumber, Monitor, Panel, ProjectModule, ServiceTile, Status, Chips } from '@/components/djk';
+import { InquiryForm } from '@/components/client/InquiryForm';
 import { PipelineRun } from '@/components/client/PipelineRun';
 import { SiteShell } from '@/components/shell/SiteShell';
 import { PROFILE, PROJECTS, SERVICES, WORKS } from '@/content';
 import { getDictionary } from '@/i18n/dictionaries';
 import type { Locale } from '@/i18n/locales';
 import { href } from '@/i18n/routes';
+import { TURNSTILE_SITE_KEY } from '@/lib/site';
 import s from './views.module.css';
 
 export const PIPELINE_STEPS = ['build', 'analyzers', 'tests', 'coverage ≥75%', 'CodeQL', 'docker', 'deploy', 'smoke test'];
 
-export function HomePage({ locale, contact }: { locale: Locale; contact?: React.ReactNode }) {
+export function HomePage({ locale }: { locale: Locale }) {
   const dict = getDictionary(locale);
   const featured = WORKS.find((w) => w.featured)!;
   const clients = WORKS.filter((w) => !w.featured);
@@ -157,13 +159,7 @@ export function HomePage({ locale, contact }: { locale: Locale; contact?: React.
           </h2>
           <p>{dict.home.contactLead}</p>
         </div>
-        {contact ?? (
-          <Panel>
-            <p className={s.lead}>
-              {dict.contact.emailDirect} <a href={`mailto:${PROFILE.email}`}>{PROFILE.email}</a>
-            </p>
-          </Panel>
-        )}
+        <InquiryForm locale={locale} dict={dict} siteKey={TURNSTILE_SITE_KEY} email={PROFILE.email} />
       </section>
     </SiteShell>
   );

@@ -1,0 +1,52 @@
+.form {
+  gap: var(--space-4);
+}
+.pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+.types {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.types legend {
+  font: 600 12px/1 var(--font-display);
+  font-stretch: 112%;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin-bottom: var(--space-2);
+}
+.types label:focus-within {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.formError {
+  margin: 0;
+  font: 500 14px/1.4 var(--font-body);
+  color: var(--ink);
+}
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+.sent {
+  gap: var(--space-3);
+}
+.sent h3 {
+  margin: 0;
+}
