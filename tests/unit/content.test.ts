@@ -1,3 +1,4 @@
+import { existsSync, statSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { PROJECT_SLUGS, WORK_SLUGS } from '@/i18n/routes';
 import { getProject, getWork, PROFILE, PROJECTS, SERVICES, WORKS } from '@/content';
@@ -56,6 +57,18 @@ describe('content', () => {
 
   it('never publishes a phone number', () => {
     expect(JSON.stringify({ PROFILE, WORKS, PROJECTS })).not.toContain('+381');
+  });
+
+  it('has a screenshot for every client site, in two sizes and two formats, each under 200 KB', () => {
+    for (const w of WORKS) {
+      expect(w.screenshot, w.slug).toBe(`/work/${w.slug}`);
+      for (const size of [800, 1600])
+        for (const ext of ['avif', 'webp']) {
+          const file = new URL(`../../public${w.screenshot}-${size}.${ext}`, import.meta.url);
+          expect(existsSync(file), file.pathname).toBe(true);
+          expect(statSync(file).size, file.pathname).toBeLessThan(200 * 1024);
+        }
+    }
   });
 
   it('looks items up by slug', () => {

@@ -21,7 +21,7 @@ export const WORKS: Work[] = [
       { value: '86.9', ghost: '88.8', caption: '% LINE COVERAGE' },
       { value: '3', ghost: '8', caption: 'PLATFORMS' },
     ],
-    screenshot: null,
+    screenshot: '/work/usluzionica',
     sections: {
       en: [
         {
@@ -87,7 +87,7 @@ export const WORKS: Work[] = [
     },
     stack: ['JavaScript', 'React', 'Tailwind CSS'],
     metrics: [],
-    screenshot: null,
+    screenshot: '/work/broker-auditor',
     sections: {
       en: [
         {
@@ -137,7 +137,7 @@ export const WORKS: Work[] = [
     },
     stack: ['React', 'Vite', 'Three.js', 'Tailwind CSS'],
     metrics: [],
-    screenshot: null,
+    screenshot: '/work/md-mont',
     sections: {
       en: [
         {
@@ -186,7 +186,7 @@ export const WORKS: Work[] = [
     },
     stack: ['Next.js', 'React', 'ASP.NET Core', 'Playwright'],
     metrics: [],
-    screenshot: null,
+    screenshot: '/work/kaneko',
     sections: {
       en: [
         {
@@ -236,7 +236,7 @@ export const WORKS: Work[] = [
     },
     stack: ['React', 'Vite', 'Tailwind CSS'],
     metrics: [],
-    screenshot: null,
+    screenshot: '/work/simplice',
     sections: {
       en: [
         {
