@@ -45,6 +45,7 @@ test.describe('theme', () => {
 test.describe('key shortcuts', () => {
   test('pressing 2 presses the Work key and scrolls to the section', async ({ page }) => {
     await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('data-shortcuts', 'on');
     await page.keyboard.down('2');
     await expect(page.locator('.djk-kc[data-key="2"]')).toHaveClass(/is-down/);
     await page.keyboard.up('2');

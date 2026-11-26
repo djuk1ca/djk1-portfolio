@@ -30,7 +30,9 @@ export function KeyShortcuts() {
 
     document.addEventListener('keydown', down);
     document.addEventListener('keyup', up);
+    document.documentElement.dataset.shortcuts = 'on';
     return () => {
+      delete document.documentElement.dataset.shortcuts;
       document.removeEventListener('keydown', down);
       document.removeEventListener('keyup', up);
     };
