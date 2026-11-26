@@ -1,6 +1,8 @@
 /**
- * The DJK-1 mark: a cobalt keycap seen from the front, with "Đ" as its main legend and a small "1"
- * as the secondary legend in the corner (from the handle djuk1ca, read as the model number DJK-1).
+ * The DJK-1 mark: a cobalt keycap whose legend is the model name set in two rows, "DJ" over "K1"
+ * (from the handle djuk1ca). The letters are drawn as geometric shapes after expanded Archivo:
+ * the stems of D and K share one column, the stems of J and 1 the other. The "1" is dimmed like a
+ * serial number.
  */
 export function LogoMark({ size = 40 }: { size?: number }) {
   return (
@@ -10,15 +12,22 @@ export function LogoMark({ size = 40 }: { size?: number }) {
       {/* top of the key */}
       <rect x="2" y="2" width="36" height="31" rx="8" className="djk-logo-top" />
       <rect x="5.5" y="4.5" width="29" height="24" rx="5.5" className="djk-logo-dish" />
-      {/* Đ: stem and bowl, with the stroke through the stem */}
+      {/* D and J */}
       <path
         className="djk-logo-legend"
         fillRule="evenodd"
-        d="M11.5 9.5h6.2c5.3 0 8.3 3.1 8.3 8s-3 8-8.3 8h-6.2zm4 3.4v9.2h2.1c2.8 0 4.3-1.7 4.3-4.6s-1.5-4.6-4.3-4.6z"
+        d="M10.2 6.3H15A4.2 4.2 0 0 1 19.2 10.5V11.5A4.2 4.2 0 0 1 15 15.7H10.2ZM12.6 8.7V13.3H15A1.8 1.8 0 0 0 16.8 11.5V10.5A1.8 1.8 0 0 0 15 8.7ZM29.6 6.3V11.7A4 4 0 0 1 21.6 11.7V10.53H24V11.7A1.6 1.6 0 0 0 27.2 11.7V6.3Z"
       />
-      <rect className="djk-logo-legend" x="8.4" y="16.1" width="9.4" height="2.8" rx="0.6" />
-      {/* secondary legend "1" */}
-      <path className="djk-logo-legend djk-logo-sub" d="M30.1 22.6l1.9-1.2h1.1v6.1h-1.4v-4.5l-1.6 1z" />
+      {/* K */}
+      <path
+        className="djk-logo-legend"
+        d="M10.2 17.5h2.4v9.4h-2.4ZM11.4 21.72L16.09 17.5L19.67 17.5L11.4 24.96ZM15.2 20.13L19.26 26.76L19.03 26.9L16.42 26.9L13.07 21.43Z"
+      />
+      {/* 1, the serial number */}
+      <path
+        className="djk-logo-legend djk-logo-sub"
+        d="M27.2 17.5h2.4v9.4h-2.4ZM24.13 19.66L26.94 17.5L28.23 17.5L29.07 18.59L25.45 21.37Z"
+      />
     </svg>
   );
 }

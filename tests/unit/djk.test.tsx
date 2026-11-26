@@ -116,7 +116,7 @@ describe('Keycap', () => {
 });
 
 describe('Logo', () => {
-  it('draws the Đ keycap mark next to the name', () => {
+  it('draws the DJK-1 keycap mark next to the name', () => {
     const out = html(<Logo name="Đurađ Manojlović" tagline="DJK-1 · Novi Sad" />);
     expect(out).toContain('<svg');
     expect(out).toContain('class="djk-logo-mark"');
