@@ -3,7 +3,8 @@ import { z } from 'zod';
 export const PROJECT_TYPES = ['website', 'web-app', 'mobile-app', 'backend', 'ai'] as const;
 export type ProjectType = (typeof PROJECT_TYPES)[number];
 
-export const HONEYPOT_FIELD = 'company_website';
+// Deliberately meaningless name: browser autofill must never fill the trap field.
+export const HONEYPOT_FIELD = 'fx_7q';
 export const CAPTCHA_FIELD = 'cf-turnstile-response';
 
 export const inquirySchema = z.object({

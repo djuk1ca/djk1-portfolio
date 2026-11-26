@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 type TurnstileApi = {
   render(el: HTMLElement, opts: Record<string, unknown>): string;
+  reset(id: string): void;
   remove(id: string): void;
 };
 declare global {
@@ -53,7 +54,8 @@ export function useTurnstile(siteKey: string, language: string) {
         if (!container.current) return;
         widgetId.current = api.render(container.current, {
           sitekey: siteKey,
-          language,
+          // Turnstile's own language list may not include Serbian; 'auto' follows the browser instead.
+          language: language === 'en' ? 'en' : 'auto',
           theme: 'auto',
           callback: (t: string) => {
             token.current = t;
@@ -94,5 +96,18 @@ export function useTurnstile(siteKey: string, language: string) {
   );
 
   const hasToken = useCallback(() => token.current !== '', []);
-  return { setContainer, start, waitForToken, hasToken };
+
+  /** A token is single-use: after any answer but "sent" the widget must issue a fresh one. */
+  const reset = useCallback(() => {
+    token.current = '';
+    if (widgetId.current) window.turnstile?.reset(widgetId.current);
+  }, []);
+
+  /** Unregisters the widget, e.g. when the form is replaced by the "sent" panel. */
+  const remove = useCallback(() => {
+    if (widgetId.current) window.turnstile?.remove(widgetId.current);
+    widgetId.current = null;
+  }, []);
+
+  return { setContainer, start, waitForToken, hasToken, reset, remove };
 }

@@ -4,10 +4,14 @@ import { inquirySchema, readInquiryForm } from './schema';
 
 export type InquiryField = 'name' | 'email' | 'types' | 'timeline' | 'message';
 
+/** What the visitor typed, sent back with an error so the form can show it again (also without JavaScript). */
+export type InquiryValues = { name: string; email: string; types: string[]; timeline: string; message: string };
+
 export type InquiryState = {
   status: 'idle' | 'sent' | 'error';
   fieldErrors?: Partial<Record<InquiryField, string>>;
   formError?: 'rateLimited' | 'captcha' | 'server';
+  values?: InquiryValues;
 };
 
 export type InquiryRecord = {
@@ -19,12 +23,15 @@ export type InquiryRecord = {
   message: string;
   ipHash: string;
   createdAt: string;
-  /** False when sent without a Turnstile token (no JavaScript): stored, not emailed. */
+  /** False when the spam check did not run (no JavaScript, widget blocked, Turnstile unreachable). */
   verified: boolean;
 };
 
+/** 'unavailable': Turnstile is not configured or could not be reached; the inquiry is kept as unverified. */
+export type CaptchaResult = 'pass' | 'fail' | 'unavailable';
+
 export type InquiryDeps = {
-  verifyCaptcha(token: string, ip: string): Promise<boolean>;
+  verifyCaptcha(token: string, ip: string): Promise<CaptchaResult>;
   hashIp(ip: string): Promise<string>;
   countSince(ipHash: string, sinceIso: string): Promise<number>;
   save(record: InquiryRecord): Promise<number>;
@@ -38,7 +45,8 @@ export const RATE_LIMIT = { max: 5, windowMs: 60 * 60 * 1000 };
 
 /**
  * Validates, checks spam and rate limits, stores the inquiry, then emails it.
- * The inquiry counts as sent once it is stored: a failed email never loses it.
+ * The inquiry counts as sent once it is stored: a failed email never loses it. Inquiries that skipped the
+ * spam check are stored as unverified and still emailed (flagged), so none sits unread in the database.
  */
 export async function handleInquiry(
   form: FormData,
@@ -47,6 +55,13 @@ export async function handleInquiry(
   dict: Dictionary,
 ): Promise<InquiryState> {
   const { input, honeypot, captcha } = readInquiryForm(form);
+  const values: InquiryValues = {
+    name: input.name,
+    email: input.email,
+    types: input.types,
+    timeline: input.timeline,
+    message: input.message,
+  };
 
   // Bots that fill the hidden field get a normal-looking answer and nothing is stored.
   if (honeypot.trim() !== '') return { status: 'sent' };
@@ -60,18 +75,22 @@ export async function handleInquiry(
       if (field === 'locale' || fieldErrors[field]) continue;
       fieldErrors[field] = field === 'message' && issue.code === 'too_big' ? errors.messageLong : errors[field];
     }
-    return { status: 'error', fieldErrors };
+    return { status: 'error', fieldErrors, values };
   }
 
-  // Without JavaScript the Turnstile widget cannot run, so there is no token. Such inquiries are kept
-  // (never lost) but stored as unverified and not emailed, so token-less bots cannot fill the inbox.
-  const verified = captcha.trim() !== '';
-  if (verified && !(await deps.verifyCaptcha(captcha, ip))) return { status: 'error', formError: 'captcha' };
+  // Without a token (no JavaScript, blocked widget) the check cannot run: keep the inquiry, flagged unverified.
+  let verified = false;
+  if (captcha.trim() !== '') {
+    const result = await deps.verifyCaptcha(captcha, ip);
+    if (result === 'fail') return { status: 'error', formError: 'captcha', values };
+    verified = result === 'pass';
+  }
 
   const now = deps.now();
   const ipHash = await deps.hashIp(ip);
   const since = new Date(now.getTime() - RATE_LIMIT.windowMs).toISOString();
-  if ((await deps.countSince(ipHash, since)) >= RATE_LIMIT.max) return { status: 'error', formError: 'rateLimited' };
+  if ((await deps.countSince(ipHash, since)) >= RATE_LIMIT.max)
+    return { status: 'error', formError: 'rateLimited', values };
 
   const record: InquiryRecord = { ...parsed.data, ipHash, createdAt: now.toISOString(), verified };
   let id: number;
@@ -79,15 +98,19 @@ export async function handleInquiry(
     id = await deps.save(record);
   } catch (error) {
     deps.log('inquiry: save failed', error);
-    return { status: 'error', formError: 'server' };
+    return { status: 'error', formError: 'server', values };
   }
 
-  if (!verified) return { status: 'sent' };
   try {
     await deps.notify({ ...record, id });
-    await deps.markEmailed(id);
   } catch (error) {
     deps.log(`inquiry ${id}: stored, email notification failed`, error);
+    return { status: 'sent' };
+  }
+  try {
+    await deps.markEmailed(id);
+  } catch (error) {
+    deps.log(`inquiry ${id}: emailed, could not mark it as emailed`, error);
   }
   return { status: 'sent' };
 }

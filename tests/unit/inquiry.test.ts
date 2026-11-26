@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { handleInquiry, type InquiryDeps, type InquiryRecord } from '@/lib/inquiry/handle';
+import { HONEYPOT_FIELD } from '@/lib/inquiry/schema';
+import { emailSubject } from '@/lib/inquiry/deps';
 import { getDictionary } from '@/i18n/dictionaries';
 
 const NOW = new Date('2026-11-26T12:00:00Z');
@@ -14,7 +16,7 @@ function form(over: Record<string, string | string[]> = {}): FormData {
     types: ['website', 'mobile-app'],
     timeline: 'by March',
     message: 'We need a site for our clinic in two languages.',
-    company_website: '',
+    [HONEYPOT_FIELD]: '',
     'cf-turnstile-response': 'token',
     ...over,
   };
@@ -27,7 +29,7 @@ function fakeDeps(over: Partial<InquiryDeps> & { prior?: string[] } = {}) {
   const saved: InquiryRecord[] = [];
   const prior = over.prior ?? [];
   const deps: InquiryDeps = {
-    verifyCaptcha: vi.fn(async () => true),
+    verifyCaptcha: vi.fn(async () => 'pass' as const),
     hashIp: vi.fn(async (ip: string) => `hash:${ip}`),
     countSince: vi.fn(async (_h: string, sinceIso: string) => prior.filter((t) => t >= sinceIso).length),
     save: vi.fn(async (r: InquiryRecord) => {
@@ -90,7 +92,7 @@ describe('handleInquiry', () => {
   ] as const)('rejects a bad email with the %s message', async (_l, dict) => {
     const { deps } = fakeDeps();
     const res = await handleInquiry(form({ email: 'not-an-email' }), '1.2.3.4', deps, dict);
-    expect(res).toEqual({ status: 'error', fieldErrors: { email: dict.contact.errors.email } });
+    expect(res).toMatchObject({ status: 'error', fieldErrors: { email: dict.contact.errors.email } });
     expect(deps.save).not.toHaveBeenCalled();
   });
 
@@ -123,17 +125,39 @@ describe('handleInquiry', () => {
 
   it('pretends success for a filled honeypot and saves nothing', async () => {
     const { deps } = fakeDeps();
-    expect(await handleInquiry(form({ company_website: 'http://spam' }), 'ip', deps, en)).toEqual({ status: 'sent' });
+    expect(await handleInquiry(form({ [HONEYPOT_FIELD]: 'http://spam' }), 'ip', deps, en)).toEqual({ status: 'sent' });
     expect(deps.save).not.toHaveBeenCalled();
     expect(deps.verifyCaptcha).not.toHaveBeenCalled();
   });
 
-  it('stores a token-less (no-JavaScript) inquiry as unverified and does not email it', async () => {
+  it('stores a token-less (no-JavaScript) inquiry as unverified and still emails it', async () => {
     const { deps, saved } = fakeDeps();
     expect(await handleInquiry(form({ 'cf-turnstile-response': '' }), 'ip', deps, en)).toEqual({ status: 'sent' });
     expect(deps.verifyCaptcha).not.toHaveBeenCalled();
     expect(saved[0].verified).toBe(false);
-    expect(deps.notify).not.toHaveBeenCalled();
+    expect(vi.mocked(deps.notify).mock.calls[0][0]).toMatchObject({ verified: false, id: 1 });
+    expect(deps.markEmailed).toHaveBeenCalledWith(1);
+  });
+
+  it('keeps the inquiry as unverified when the spam check is not configured or unreachable', async () => {
+    const { deps, saved } = fakeDeps({ verifyCaptcha: vi.fn(async () => 'unavailable' as const) });
+    expect(await handleInquiry(form(), 'ip', deps, en)).toEqual({ status: 'sent' });
+    expect(saved[0].verified).toBe(false);
+    expect(deps.notify).toHaveBeenCalledOnce();
+  });
+
+  it('returns what the visitor typed with every error so the form can keep it', async () => {
+    const { deps } = fakeDeps();
+    const res = await handleInquiry(form({ email: 'bad', message: 'A long message about our clinic.' }), 'ip', deps, en);
+    expect(res.values).toEqual({
+      name: 'Ana Petrović',
+      email: 'bad',
+      types: ['website', 'mobile-app'],
+      timeline: 'by March',
+      message: 'A long message about our clinic.',
+    });
+    const captcha = await handleInquiry(form(), 'ip', fakeDeps({ verifyCaptcha: vi.fn(async () => 'fail' as const) }).deps, en);
+    expect(captcha.values?.message).toBe('We need a site for our clinic in two languages.');
   });
 
   it('marks a captcha-checked inquiry as verified', async () => {
@@ -143,15 +167,15 @@ describe('handleInquiry', () => {
   });
 
   it('stops on a failed captcha', async () => {
-    const { deps } = fakeDeps({ verifyCaptcha: vi.fn(async () => false) });
-    expect(await handleInquiry(form(), 'ip', deps, en)).toEqual({ status: 'error', formError: 'captcha' });
+    const { deps } = fakeDeps({ verifyCaptcha: vi.fn(async () => 'fail' as const) });
+    expect(await handleInquiry(form(), 'ip', deps, en)).toMatchObject({ status: 'error', formError: 'captcha' });
     expect(deps.save).not.toHaveBeenCalled();
   });
 
   it('rate-limits the sixth inquiry within an hour', async () => {
     const recent = Array.from({ length: 5 }, (_, i) => new Date(NOW.getTime() - (i + 1) * 60_000).toISOString());
     const { deps } = fakeDeps({ prior: recent });
-    expect(await handleInquiry(form(), 'ip', deps, en)).toEqual({ status: 'error', formError: 'rateLimited' });
+    expect(await handleInquiry(form(), 'ip', deps, en)).toMatchObject({ status: 'error', formError: 'rateLimited' });
     expect(deps.save).not.toHaveBeenCalled();
   });
 
@@ -163,7 +187,17 @@ describe('handleInquiry', () => {
 
   it('reports a server error when saving fails', async () => {
     const { deps } = fakeDeps({ save: vi.fn(async () => Promise.reject(new Error('D1 down'))) });
-    expect(await handleInquiry(form(), 'ip', deps, en)).toEqual({ status: 'error', formError: 'server' });
+    expect(await handleInquiry(form(), 'ip', deps, en)).toMatchObject({ status: 'error', formError: 'server' });
     expect(deps.notify).not.toHaveBeenCalled();
+  });
+});
+
+describe('emailSubject', () => {
+  const base = { locale: 'en' as const, name: 'Ana', email: 'a@b.co', types: ['website'], timeline: null, message: 'x', ipHash: 'h', createdAt: '' };
+  it('names the needs and the sender', () => {
+    expect(emailSubject({ ...base, verified: true, id: 1 })).toBe('New inquiry: website — Ana');
+  });
+  it('flags inquiries that skipped the spam check', () => {
+    expect(emailSubject({ ...base, verified: false, id: 1 })).toBe('[unverified] New inquiry: website — Ana');
   });
 });

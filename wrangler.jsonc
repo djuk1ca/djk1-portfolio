@@ -19,10 +19,7 @@
     }
   ],
   "vars": {
-    // Change to the custom domain once it exists; canonical URLs, sitemap and OG images use it.
-    "SITE_URL": "https://djk1-portfolio.workers.dev",
-    // Turnstile always-pass test key until a real widget exists (Cloudflare dashboard → Turnstile).
-    "TURNSTILE_SITE_KEY": "1x00000000000000000000AA",
+    // SITE_URL and TURNSTILE_SITE_KEY are build-time env vars (prerendered pages), not set here. See README.
     "NOTIFY_EMAIL": "djuradj.manojlovic04@gmail.com"
   }
   // Secrets (wrangler secret put …): TURNSTILE_SECRET, RESEND_API_KEY, IP_SALT

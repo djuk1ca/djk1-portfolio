@@ -36,8 +36,8 @@ On Windows OpenNext prints a compatibility warning; builds and previews work, CI
 ## Inquiry form
 
 Server Action → zod validation → Cloudflare Turnstile → rate limit (5 per hour per IP) → D1 → email via Resend.
-An inquiry counts as sent once it is stored; a failed email never loses it. Without JavaScript the form still works:
-those inquiries are stored with `verified = 0` and not emailed. Read them with:
+An inquiry counts as sent once it is stored; a failed email never loses it. Inquiries that skipped the spam check (no JavaScript, blocked widget, Turnstile unreachable) are stored with
+`verified = 0` and still emailed, with `[unverified]` in the subject. Read all of them with:
 
 ```bash
 npx wrangler d1 execute djk1-inquiries --remote --command "SELECT * FROM inquiries ORDER BY id DESC LIMIT 20"
@@ -45,14 +45,23 @@ npx wrangler d1 execute djk1-inquiries --remote --command "SELECT * FROM inquiri
 
 ## One-time Cloudflare setup (Đurađ)
 
+`SITE_URL` and `TURNSTILE_SITE_KEY` are **build-time** environment variables: pages are prerendered, so they are
+baked in when you build. `npm run deploy` refuses to run while either is missing, points at localhost or is the
+Turnstile test key.
+
 1. `npx wrangler login`
 2. `npx wrangler d1 create djk1-inquiries` and paste the printed `database_id` into `wrangler.jsonc`.
-3. Turnstile: create a widget in the Cloudflare dashboard for the `*.workers.dev` host (later the domain); put the site key in `wrangler.jsonc` → `TURNSTILE_SITE_KEY` and in the GitHub variable of the same name.
-4. Secrets: `npx wrangler secret put TURNSTILE_SECRET`, `RESEND_API_KEY` (from resend.com), `IP_SALT` (any long random string).
-5. First deploy: `SITE_URL=https://djk1-portfolio.<account>.workers.dev npm run db:migrate:remote && npm run deploy`.
+3. Turnstile: create a widget in the Cloudflare dashboard for the `*.workers.dev` host (later also the domain). Keep its **site key** for step 5 and its **secret key** for step 4.
+4. Runtime secrets: `npx wrangler secret put TURNSTILE_SECRET`, `RESEND_API_KEY` (from resend.com), `IP_SALT` (any long random string).
+5. First deploy, in one shell (Git Bash):
+   ```bash
+   export SITE_URL=https://djk1-portfolio.<your-account>.workers.dev
+   export TURNSTILE_SITE_KEY=0x4AAAA...
+   npm run db:migrate:remote && npm run deploy
+   ```
 6. GitHub: secrets `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`; variables `SITE_URL`, `TURNSTILE_SITE_KEY`. Every push to `main` then tests and deploys.
 7. Cloudflare dashboard → Workers → djk1-portfolio → enable Web Analytics (no cookies, no banner needed).
 
 ## Moving to a custom domain
 
-Add the domain under the Worker's *Domains & Routes*, set `SITE_URL` (GitHub variable and `wrangler.jsonc`), add the domain to the Turnstile widget, redeploy, and redirect the `workers.dev` address to the domain (301) so search engines carry the pages over. Then submit `https://<domain>/sitemap.xml` in Google Search Console.
+Add the domain under the Worker's *Domains & Routes*, set `SITE_URL` to it (GitHub variable, and your shell for manual deploys), add the domain to the Turnstile widget, redeploy, and redirect the `workers.dev` address to the domain (301) so search engines carry the pages over. Then submit `https://<domain>/sitemap.xml` in Google Search Console.

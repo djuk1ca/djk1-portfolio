@@ -1,4 +1,4 @@
-import type { InquiryDeps, InquiryRecord } from './handle';
+import type { CaptchaResult, InquiryDeps, InquiryRecord } from './handle';
 
 export type InquiryEnv = {
   DB: D1Database;
@@ -22,6 +22,10 @@ async function sha256Hex(text: string): Promise<string> {
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
+export function emailSubject(r: InquiryRecord & { id: number }): string {
+  return `${r.verified ? '' : '[unverified] '}New inquiry: ${r.types.join(', ')} — ${r.name}`;
+}
+
 export function emailText(r: InquiryRecord & { id: number }): string {
   return [
     `Inquiry #${r.id} (${r.locale.toUpperCase()}) · ${r.createdAt}`,
@@ -38,15 +42,23 @@ export function emailText(r: InquiryRecord & { id: number }): string {
 /** The real dependencies on the Worker: Turnstile, D1 and Resend. */
 export function createDeps(env: InquiryEnv): InquiryDeps {
   return {
-    async verifyCaptcha(token, ip) {
-      if (!env.TURNSTILE_SECRET) return false;
+    async verifyCaptcha(token, ip): Promise<CaptchaResult> {
+      if (!env.TURNSTILE_SECRET) {
+        console.error('inquiry: TURNSTILE_SECRET is not set; storing the inquiry as unverified');
+        return 'unavailable';
+      }
       const body = new FormData();
       body.append('secret', env.TURNSTILE_SECRET);
       body.append('response', token);
       if (ip) body.append('remoteip', ip);
-      const res = await fetch(TURNSTILE_VERIFY, { method: 'POST', body });
-      if (!res.ok) return false;
-      return ((await res.json()) as { success?: boolean }).success === true;
+      try {
+        const res = await fetch(TURNSTILE_VERIFY, { method: 'POST', body, signal: AbortSignal.timeout(5000) });
+        if (!res.ok) return 'unavailable';
+        return ((await res.json()) as { success?: boolean }).success === true ? 'pass' : 'fail';
+      } catch (error) {
+        console.error('inquiry: Turnstile unreachable', error);
+        return 'unavailable';
+      }
     },
 
     hashIp: (ip) => sha256Hex(`${env.IP_SALT ?? ''}${ip}`),
@@ -83,7 +95,7 @@ export function createDeps(env: InquiryEnv): InquiryDeps {
           from: 'Portfolio <onboarding@resend.dev>',
           to: [env.NOTIFY_EMAIL],
           reply_to: r.email,
-          subject: `New inquiry: ${r.types.join(', ')} — ${r.name}`,
+          subject: emailSubject(r),
           text: emailText(r),
         }),
       });

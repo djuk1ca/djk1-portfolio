@@ -9,8 +9,18 @@ export function KeyShortcuts() {
     const keyFor = (key: string) => document.querySelector<HTMLAnchorElement>(`.djk-kc[data-key="${key}"]`);
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // KeyboardEvent's ctrlKey/altKey/metaKey are prototype getters, so build the object explicitly (no spread).
+    const read = (e: KeyboardEvent) =>
+      shortcutKey({
+        key: e.key,
+        ctrlKey: e.ctrlKey,
+        altKey: e.altKey,
+        metaKey: e.metaKey,
+        target: e.target as HTMLElement | null,
+      });
+
     const down = (e: KeyboardEvent) => {
-      const key = shortcutKey({ ...e, key: e.key, target: e.target as HTMLElement | null });
+      const key = read(e);
       if (!key) return;
       const cap = keyFor(key);
       if (!cap) return;
@@ -26,7 +36,9 @@ export function KeyShortcuts() {
         location.assign(cap.href);
       }
     };
-    const up = (e: KeyboardEvent) => keyFor(e.key)?.classList.remove('is-down');
+    const up = (e: KeyboardEvent) => {
+      if (/^[1-5]$/.test(e.key)) keyFor(e.key)?.classList.remove('is-down');
+    };
 
     document.addEventListener('keydown', down);
     document.addEventListener('keyup', up);

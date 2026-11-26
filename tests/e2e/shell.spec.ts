@@ -52,4 +52,26 @@ test.describe('key shortcuts', () => {
     await expect(page.locator('.djk-kc[data-key="2"]')).not.toHaveClass(/is-down/);
     await expect.poll(async () => (await page.locator('#work').boundingBox())?.y ?? 9999).toBeLessThan(200);
   });
+
+  test('ignores the section keys when a modifier is held (browser tab shortcuts)', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('data-shortcuts', 'on');
+    await page.keyboard.down('Control');
+    await page.keyboard.down('2');
+    await expect(page.locator('.djk-kc[data-key="2"]')).not.toHaveClass(/is-down/);
+    await page.keyboard.up('2');
+    await page.keyboard.up('Control');
+    expect(new URL(page.url()).hash).toBe('');
+  });
+
+  test('typing quotes or backslashes anywhere does not throw', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (e) => errors.push(e.message));
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('data-shortcuts', 'on');
+    await page.keyboard.press('Shift+Quote');
+    await page.keyboard.press('Backslash');
+    expect(errors).toEqual([]);
+  });
 });
+

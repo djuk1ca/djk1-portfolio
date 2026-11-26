@@ -82,3 +82,59 @@ test('typing digits in the message does not trigger section shortcuts', async ({
   await expect(message).toHaveValue('5 pages');
   expect(new URL(page.url()).hash).toBe('');
 });
+
+test('keeps what the visitor typed when the server returns an error', async ({ page }) => {
+  await page.goto('/contact');
+  await fill(page);
+  await page.getByLabel('Email').fill('not-an-email');
+  await page.getByRole('button', { name: 'Send inquiry' }).click();
+  await expect(page.locator('#inquiry-email-error')).toBeVisible();
+  await expect(page.getByLabel('About the project')).toHaveValue('We need a company site in two languages.');
+  await expect(page.getByLabel('Your name')).toHaveValue('Đurađ Test');
+});
+
+test('keeps what the visitor typed without JavaScript too', async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto('/contact');
+  await fill(page);
+  await page.getByLabel('Email').fill('not-an-email');
+  await page.getByRole('button', { name: 'Send inquiry' }).click();
+  await expect(page.locator('#inquiry-email-error')).toBeVisible();
+  await expect(page.getByLabel('About the project')).toHaveValue('We need a company site in two languages.');
+  await expect(page.locator('input[name="types"][value="website"]')).toBeChecked();
+  await context.close();
+});
+
+test('a double click while the spam check loads sends one verified inquiry', async ({ page }) => {
+  await page.route('https://challenges.cloudflare.com/turnstile/v0/api.js*', async (route) => {
+    await new Promise((r) => setTimeout(r, 2500));
+    await route.continue();
+  });
+  await page.goto('/contact');
+  await fill(page);
+  const send = page.getByRole('button', { name: 'Send inquiry' });
+  await send.click();
+  await send.click({ force: true });
+  await expect(page.getByRole('heading', { name: 'Inquiry sent' })).toBeVisible({ timeout: 20_000 });
+  await page.waitForTimeout(1500);
+  expect(d1('SELECT verified FROM inquiries')).toEqual([{ verified: 1 }]);
+});
+
+test('a failed request shows an error and keeps the form', async ({ page }) => {
+  await page.goto('/contact');
+  await fill(page);
+  await expect(page.locator('input[name="cf-turnstile-response"]')).not.toHaveValue('', { timeout: 15_000 });
+  await page.route('**/contact', (route) => (route.request().method() === 'POST' ? route.abort() : route.continue()));
+  await page.getByRole('button', { name: 'Send inquiry' }).click();
+  await expect(page.locator('form [role="alert"]')).toContainText('Something broke on my side');
+  await expect(page.getByLabel('About the project')).toHaveValue('We need a company site in two languages.');
+});
+
+test('the honeypot field does not look like something autofill would fill', async ({ page }) => {
+  await page.goto('/contact');
+  const trap = page.locator('form input[tabindex="-1"]');
+  await expect(trap).toHaveCount(1);
+  expect(await trap.getAttribute('name')).not.toMatch(/company|website|url|mail|name|phone/i);
+  await expect(trap).toHaveAttribute('autocomplete', 'one-time-code');
+});
