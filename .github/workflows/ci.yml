@@ -40,25 +40,4 @@ jobs:
           path: test-results/
           retention-days: 7
 
-  deploy:
-    needs: test
-    # Runs once the Cloudflare setup in README is done (the SITE_URL repository variable exists).
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.SITE_URL != ''
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    environment: production
-    env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      # Prerendered pages bake this into canonical URLs, the sitemap and Open Graph tags.
-      SITE_URL: ${{ vars.SITE_URL }}
-      TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: npm run db:migrate:remote
-      - run: npm run deploy
+# Deploys are done by Cloudflare Workers Builds (connected to this repo), not here. See README.
