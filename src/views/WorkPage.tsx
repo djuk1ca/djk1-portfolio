@@ -1,3 +1,5 @@
+import { JsonLd } from '@/components/seo/JsonLd';
+import { breadcrumbJsonLd } from '@/lib/seo';
 import { notFound } from 'next/navigation';
 import { Chips, Key, LcdGrid, Monitor, Panel } from '@/components/djk';
 import { SiteShell } from '@/components/shell/SiteShell';
@@ -16,6 +18,7 @@ export function WorkPage({ locale, slug }: { locale: Locale; slug: string }) {
 
   return (
     <SiteShell locale={locale} current={{ page: 'work', slug: work.slug }}>
+      <JsonLd data={breadcrumbJsonLd(locale, { page: 'work', slug: work.slug })} />
       <header className={s.heroCopy}>
         <span className="djk-eyebrow">{work.kind[locale]}</span>
         <h1 className="display">{work.name}</h1>

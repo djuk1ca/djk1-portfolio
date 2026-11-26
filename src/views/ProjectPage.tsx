@@ -1,3 +1,5 @@
+import { JsonLd } from '@/components/seo/JsonLd';
+import { breadcrumbJsonLd } from '@/lib/seo';
 import { notFound } from 'next/navigation';
 import { Chips, Key, LcdGrid, Panel, Status } from '@/components/djk';
 import { SiteShell } from '@/components/shell/SiteShell';
@@ -16,6 +18,7 @@ export function ProjectPage({ locale, slug }: { locale: Locale; slug: string }) 
 
   return (
     <SiteShell locale={locale} current={{ page: 'projects', slug: project.slug }}>
+      <JsonLd data={breadcrumbJsonLd(locale, { page: 'projects', slug: project.slug })} />
       <header className={s.heroCopy}>
         <span className="djk-eyebrow">{project.kicker}</span>
         <h1 className="display">{project.name}</h1>

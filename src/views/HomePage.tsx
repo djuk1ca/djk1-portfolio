@@ -1,3 +1,5 @@
+import { JsonLd } from '@/components/seo/JsonLd';
+import { personJsonLd, professionalServiceJsonLd } from '@/lib/seo';
 import { Cursor, Key, Lcd, LcdGrid, LcdNumber, Monitor, Panel, ProjectModule, ServiceTile, Status, Chips } from '@/components/djk';
 import { InquiryForm } from '@/components/client/InquiryForm';
 import { PipelineRun } from '@/components/client/PipelineRun';
@@ -19,6 +21,8 @@ export function HomePage({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} current={{ page: 'home' }}>
+      <JsonLd data={personJsonLd()} />
+      <JsonLd data={professionalServiceJsonLd(locale)} />
       <section id="top" className={s.hero} aria-labelledby="hero-title">
         <div className={s.heroCopy}>
           <span className="djk-eyebrow">{dict.home.eyebrow}</span>
