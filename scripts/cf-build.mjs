@@ -10,6 +10,8 @@ export const PRODUCTION = {
 };
 
 process.env.SITE_URL ||= PRODUCTION.SITE_URL;
+// A dashboard build variable entered as a bare host ("djk1-portfolio….workers.dev") gets its scheme here.
+if (!/^[a-z]+:\/\//i.test(process.env.SITE_URL)) process.env.SITE_URL = `https://${process.env.SITE_URL}`;
 process.env.TURNSTILE_SITE_KEY ||= PRODUCTION.TURNSTILE_SITE_KEY;
 
 const problems = checkDeployEnv(process.env);
