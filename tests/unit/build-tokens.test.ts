@@ -17,6 +17,7 @@ describe('buildTokensCss', () => {
     const kit = block(':root, [data-theme="kit"] {');
     expect(kit).toContain('--desk: #d9d7d0;');
     expect(kit).toContain('--accent: #2d4bd2;');
+    expect(kit).toContain('--danger: #b42318;');
   });
 
   it('writes the grafit theme under [data-theme="grafit"]', () => {

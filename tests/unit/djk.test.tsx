@@ -110,6 +110,8 @@ describe('Keycap', () => {
     const out = html(<Keycap n={2} label="Work" href="#work" compact />);
     expect(out).toContain('class="djk-key djk-kc djk-kc--compact djk-key--sm"');
     expect(out).toContain('data-key="2"');
+    expect(out).not.toContain('<b');
+    expect(out).toContain('>Work</span>');
   });
 });
 

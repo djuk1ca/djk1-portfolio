@@ -1,5 +1,5 @@
 export const en = {
-  brand: 'DJK-1 · Novi Sad',
+  brand: 'Novi Sad, Serbia',
   nav: {
     label: 'Sections',
     home: 'Home',

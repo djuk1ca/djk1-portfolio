@@ -25,6 +25,7 @@
   --led-on: #2fbf66;
   --led-warn: #f0a020;
   --led-off: #9b978f;
+  --danger: #b42318;
   --paper: #fbfaf6;
   --paper-ink: #1f1e1b;
   --paper-muted: #6b675f;
@@ -61,6 +62,7 @@
   --accent-soft: rgba(72, 99, 238, 0.20);
   --screen: #0d0b06;
   --led-off: #45484e;
+  --danger: #ff7a6e;
   --paper: #ece9e1;
   --line: rgba(236, 234, 229, 0.12);
   --hl: rgba(255, 255, 255, 0.07);
@@ -91,6 +93,7 @@
   --accent-soft: rgba(72, 99, 238, 0.20);
   --screen: #0d0b06;
   --led-off: #45484e;
+  --danger: #ff7a6e;
   --paper: #ece9e1;
   --line: rgba(236, 234, 229, 0.12);
   --hl: rgba(255, 255, 255, 0.07);

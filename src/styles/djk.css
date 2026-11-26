@@ -258,3 +258,7 @@
 .djk-logo-name { font: 800 16px/1 var(--font-display); font-stretch: 116%; letter-spacing: -.005em; white-space: nowrap; }
 .djk-logo-tag { font: 500 11px/1 var(--font-mono); color: var(--ink-2); letter-spacing: .04em; white-space: nowrap; }
 a:hover .djk-logo-mark { transform: translateY(1px); }
+
+/* Form errors: red text and a red edge on the field, always with words. */
+.djk-root .djk-field-error { color: var(--danger); font-weight: 600; }
+.djk-field [aria-invalid="true"] { box-shadow: var(--sink), 0 0 0 2px var(--danger); }

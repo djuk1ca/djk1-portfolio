@@ -34,8 +34,11 @@
 }
 .formError {
   margin: 0;
-  font: 500 14px/1.4 var(--font-body);
-  color: var(--ink);
+  font: 600 14px/1.4 var(--font-body);
+  color: var(--danger);
+}
+.formError a {
+  color: inherit;
 }
 .foot {
   display: flex;

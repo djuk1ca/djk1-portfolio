@@ -9,7 +9,7 @@ export function Keycap({
   label: string;
   href: string;
   variant?: 'accent' | 'mod';
-  /** Single-row, small-key height: number and label side by side (header navigation). */
+  /** Small-key height, label only (header navigation). The number key still works as a shortcut. */
   compact?: boolean;
 }) {
   const cls = ['djk-key djk-kc', compact && 'djk-kc--compact djk-key--sm', variant && `djk-key--${variant}`]
@@ -17,7 +17,7 @@ export function Keycap({
     .join(' ');
   return (
     <a className={cls} href={href} data-key={n}>
-      <b aria-hidden="true">{n}</b>
+      {!compact && <b aria-hidden="true">{n}</b>}
       <span>{label}</span>
     </a>
   );
