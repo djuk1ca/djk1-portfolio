@@ -40,8 +40,6 @@ export function WorkPage({ locale, slug }: { locale: Locale; slug: string }) {
         </div>
       </header>
 
-      <Monitor work={work} locale={locale} dict={dict} eager />
-
       {work.metrics.length > 0 && (
         <Panel screws>
           <h2 className="eyebrow">{dict.work.numbers}</h2>
@@ -50,6 +48,8 @@ export function WorkPage({ locale, slug }: { locale: Locale; slug: string }) {
       )}
 
       <Prose sections={work.sections[locale]} />
+
+      <Monitor work={work} locale={locale} dict={dict} />
 
       <section className={s.section} aria-labelledby="stack-title">
         <h2 id="stack-title" className="eyebrow">

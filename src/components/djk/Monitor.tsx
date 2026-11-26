@@ -32,6 +32,7 @@ export function Monitor({
               height={450}
               alt={`${work.name}: ${work.domain} homepage`}
               loading={eager ? 'eager' : 'lazy'}
+              fetchPriority={eager ? 'high' : 'auto'}
               decoding="async"
             />
           </picture>
