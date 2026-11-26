@@ -42,7 +42,8 @@ jobs:
 
   deploy:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Runs once the Cloudflare setup in README is done (the SITE_URL repository variable exists).
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.SITE_URL != ''
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: production
