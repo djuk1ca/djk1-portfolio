@@ -1,10 +1,6 @@
 import type { ReactNode } from 'react';
-import '@/styles/globals.css';
+import { RootDocument } from '@/components/shell/RootDocument';
 
 export default function EnglishRootLayout({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <body className="djk-root">{children}</body>
-    </html>
-  );
+  return <RootDocument locale="en">{children}</RootDocument>;
 }

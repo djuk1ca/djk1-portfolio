@@ -229,3 +229,6 @@
   .djk-key, .djk-switch-knob, .djk-led { transition: none; }
   .djk-cursor { animation: none; }
 }
+
+/* Current language / page key: same look as a pressed key. */
+.djk-key[aria-current="true"] { --top: var(--accent); --side: var(--accent-side); --fg: var(--on-accent); }
