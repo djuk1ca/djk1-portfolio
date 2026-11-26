@@ -1,5 +1,5 @@
 -- Inquiries sent through the contact form. `types` is a JSON array of project types.
-CREATE TABLE inquiries (
+CREATE TABLE IF NOT EXISTS inquiries (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   created_at TEXT NOT NULL,
   locale TEXT NOT NULL,
@@ -14,4 +14,4 @@ CREATE TABLE inquiries (
   emailed INTEGER NOT NULL DEFAULT 0
 );
 
-CREATE INDEX idx_inquiries_ip_created ON inquiries(ip_hash, created_at);
+CREATE INDEX IF NOT EXISTS idx_inquiries_ip_created ON inquiries(ip_hash, created_at);

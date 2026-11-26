@@ -1,4 +1,4 @@
-import type { CaptchaResult, InquiryDeps, InquiryRecord } from './handle';
+import { describeError, type CaptchaResult, type InquiryDeps, type InquiryRecord } from './handle';
 
 export type InquiryEnv = {
   DB: D1Database;
@@ -56,7 +56,7 @@ export function createDeps(env: InquiryEnv): InquiryDeps {
         if (!res.ok) return 'unavailable';
         return ((await res.json()) as { success?: boolean }).success === true ? 'pass' : 'fail';
       } catch (error) {
-        console.error('inquiry: Turnstile unreachable', error);
+        console.error(`inquiry: Turnstile unreachable: ${describeError(error)}`);
         return 'unavailable';
       }
     },
@@ -103,6 +103,6 @@ export function createDeps(env: InquiryEnv): InquiryDeps {
     },
 
     now: () => new Date(),
-    log: (message, error) => console.error(message, error),
+    log: (message, error) => console.error(error === undefined ? message : `${message}: ${describeError(error)}`),
   };
 }

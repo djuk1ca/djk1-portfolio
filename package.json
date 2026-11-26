@@ -26,7 +26,7 @@
     "screenshots": "node scripts/screenshots.mjs",
     "og": "node scripts/og-images.mjs",
     "cf:build": "node scripts/cf-build.mjs",
-    "cf:deploy": "opennextjs-cloudflare deploy"
+    "cf:deploy": "wrangler d1 migrations apply djk1-inquiries --remote && opennextjs-cloudflare deploy"
   },
   "dependencies": {
     "next": "16.4.6",

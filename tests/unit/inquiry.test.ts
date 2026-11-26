@@ -201,3 +201,12 @@ describe('emailSubject', () => {
     expect(emailSubject({ ...base, verified: false, id: 1 })).toBe('[unverified] New inquiry: website — Ana');
   });
 });
+
+describe('describeError', () => {
+  it('puts the message first so Workers logs show what failed', async () => {
+    const { describeError } = await import('@/lib/inquiry/handle');
+    expect(describeError(new Error('D1_ERROR: no such table: inquiries'))).toBe('Error: D1_ERROR: no such table: inquiries');
+    expect(describeError(new Error('outer', { cause: new TypeError('inner') }))).toBe('Error: outer (cause: TypeError: inner)');
+    expect(describeError('plain')).toBe('plain');
+  });
+});

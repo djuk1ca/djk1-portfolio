@@ -43,6 +43,12 @@ export type InquiryDeps = {
 
 export const RATE_LIMIT = { max: 5, windowMs: 60 * 60 * 1000 };
 
+/** The error's message first (Workers logs show only the stack of a bare Error), then its stack. */
+export function describeError(error: unknown): string {
+  if (error instanceof Error) return `${error.name}: ${error.message}${error.cause ? ` (cause: ${describeError(error.cause)})` : ''}`;
+  return String(error);
+}
+
 /**
  * Validates, checks spam and rate limits, stores the inquiry, then emails it.
  * The inquiry counts as sent once it is stored: a failed email never loses it. Inquiries that skipped the
